@@ -27,7 +27,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             return BaseResponse.<UserResponse>builder()
                     .message("Already exist by "+ userRequest.getUsername())
-                    .status(404)
+                    .status(400)
                     .build();
         }
         UserEntity user = modelMapper.map(userRequest, UserEntity.class);
@@ -36,7 +36,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         return BaseResponse.<UserResponse>builder()
                 .message("Success")
                 .data(modelMapper.map(user,UserResponse.class))
-                .status(200)
+                .status(201)
                 .build();
     }
 
@@ -59,11 +59,15 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     public List<BaseResponse<UserResponse>> getAll() {
         return null;
     }
-    public UserEntity login(UserLoginDto auth) {
+    public BaseResponse<UserResponse> login(UserLoginDto auth) {
         UserEntity userEntity = userRepository.findByUsername(auth.getUsername())
-                .orElseThrow(() -> new DataNotFoundException("user not found"));
+                .orElseThrow(() -> new DataNotFoundException("username/password is wrong"));
         if(passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
-            return userEntity;
+            BaseResponse.<UserResponse>builder()
+                    .message("Success")
+                    .data(modelMapper.map(userEntity,UserResponse.class))
+                    .status(200)
+                    .build();
         }
         throw new DataNotFoundException("username/password is wrong");
     }

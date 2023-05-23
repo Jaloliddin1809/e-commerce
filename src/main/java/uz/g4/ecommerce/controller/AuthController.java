@@ -16,20 +16,19 @@ import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.service.user.UserService;
 
 @Controller
-@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
 
     @GetMapping("/login")
+    public String login() {
+        return "index";
+    }
+    @PostMapping ("/login")
     public String login(@RequestBody UserLoginDto userLoginDto) {
         userService.login(userLoginDto);
-
-
-
-
-        return "admin";
+        return "/dashboard";
     }
 
 
