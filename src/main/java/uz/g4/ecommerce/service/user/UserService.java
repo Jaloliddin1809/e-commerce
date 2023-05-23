@@ -29,8 +29,8 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     public BaseResponse<UserResponse> create(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             return BaseResponse.<UserResponse>builder()
-                    .message("Already exist by " + userRequest.getUsername())
-                    .status(404)
+                    .message("Already exist by "+ userRequest.getUsername())
+                    .status(400)
                     .build();
         }
         UserEntity user = modelMapper.map(userRequest, UserEntity.class);
@@ -38,8 +38,8 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         userRepository.save(user);
         return BaseResponse.<UserResponse>builder()
                 .message("Success")
-                .data(modelMapper.map(user, UserResponse.class))
-                .status(200)
+                .data(modelMapper.map(user,UserResponse.class))
+                .status(201)
                 .build();
     }
 
@@ -89,13 +89,15 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         return size.map(integer -> userRepository.findAll(PageRequest.of(0, integer)).getContent()).orElseGet(userRepository::findAll);
 
     }
-
-
-    public UserEntity login(UserLoginRequest auth) {
+    public BaseResponse<UserResponse> login(UserLoginDto auth) {
         UserEntity userEntity = userRepository.findByUsername(auth.getUsername())
-                .orElseThrow(() -> new DataNotFoundException("user not found"));
-        if (passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
-            return userEntity;
+                .orElseThrow(() -> new DataNotFoundException("username/password is wrong"));
+        if(passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
+            BaseResponse.<UserResponse>builder()
+                    .message("Success")
+                    .data(modelMapper.map(userEntity,UserResponse.class))
+                    .status(200)
+                    .build();
         }
         throw new DataNotFoundException("username/password is wrong");
     }
