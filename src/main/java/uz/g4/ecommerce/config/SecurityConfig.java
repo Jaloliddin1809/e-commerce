@@ -23,8 +23,8 @@ public class SecurityConfig {
     private static final String[] WHITE_LIST = new String[]{
             "/login/**",
             "/css/**",
-            "/images/**"
-//            ,"/js/**"
+            "/images/**",
+            "/auth/**"
     };
 
 
@@ -38,13 +38,13 @@ public class SecurityConfig {
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/auth/login")
                 .defaultSuccessUrl("/dashboard")
                 .permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
+                .logoutSuccessUrl("/auth/login")
                 .permitAll()
                 .and()
                 .build();

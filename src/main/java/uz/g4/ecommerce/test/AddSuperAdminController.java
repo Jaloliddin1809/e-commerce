@@ -16,13 +16,12 @@ import java.util.Set;
 @RequestMapping("auth/v1/api")
 @RequiredArgsConstructor
 public class AddSuperAdminController {
-//   http://localhost:8080/auth/v1/api/super-admin
     private final UserService userService;
 
     @GetMapping("/super-admin")
     public BaseResponse<UserResponse> addSuperAdmin() {
         Set<Permission> perm = Set.of(Permission.ADD, Permission.EDIT, Permission.GET,Permission.DELETE);
         return userService.create(
-                new UserRequest("Khamroz", "admin", "123", Set.of(Role.SUPER_ADMIN), perm));
+                new UserRequest("Name", "ADMIN", "123", Set.of(Role.ADMIN), perm));
     }
 }

@@ -89,7 +89,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         return size.map(integer -> userRepository.findAll(PageRequest.of(0, integer)).getContent()).orElseGet(userRepository::findAll);
 
     }
-    public BaseResponse<UserResponse> login(UserLoginDto auth) {
+    public BaseResponse<UserResponse> login(UserLoginRequest auth) {
         UserEntity userEntity = userRepository.findByUsername(auth.getUsername())
                 .orElseThrow(() -> new DataNotFoundException("username/password is wrong"));
         if(passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
