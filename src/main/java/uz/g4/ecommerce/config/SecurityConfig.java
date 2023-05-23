@@ -34,8 +34,6 @@ public class SecurityConfig {
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/auth/login")
-                .defaultSuccessUrl("/admin")
                 .and()
                 .build();
     }
