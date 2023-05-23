@@ -15,9 +15,7 @@ import java.util.Set;
 @Builder
 public class UserRequest {
     private String name;
-    @Column(unique = true, nullable = false)
     private String username;  // Admin username or users phone number
-    @Column(nullable = false)
     private String password;
     private Set<Role> roles;
     private Set<Permission> permissions;
