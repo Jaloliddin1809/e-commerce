@@ -37,6 +37,11 @@ public class UserEntity extends BaseEntity implements UserDetails {
         return roles.stream().map((role) -> new SimpleGrantedAuthority("ROLE_" + role.name())).toList();
     }
 
+
+
+
+
+
     @Override
     public String getPassword() {
         return this.password;
