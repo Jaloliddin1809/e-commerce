@@ -2,19 +2,21 @@ package uz.g4.ecommerce.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.g4.ecommerce.domain.dto.UserLoginDto;
+import uz.g4.ecommerce.domain.dto.request.UserLoginRequest;
 import uz.g4.ecommerce.domain.dto.request.UserRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
+import uz.g4.ecommerce.domain.entity.user.Permission;
+import uz.g4.ecommerce.domain.entity.user.Role;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.domain.exception.DataNotFoundException;
 import uz.g4.ecommerce.repository.UserRepository;
 import uz.g4.ecommerce.service.BaseService;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
+
     @Override
     public BaseResponse<UserResponse> create(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
@@ -46,18 +49,45 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     }
 
     @Override
-    public BaseResponse<UserResponse> delete(UUID id) {
-        return null;
+    public Boolean delete(UUID id) {
+        Optional<UserEntity> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            user.get().setEnabled(false);
+            userRepository.save(user.get());
+            return true;
+        }
+        return false;
+
+
     }
 
     @Override
     public BaseResponse<UserResponse> getById(UUID id) {
-        return null;
+        Optional<UserEntity> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            UserResponse user = modelMapper.map(byId, UserResponse.class);
+            return BaseResponse.<UserResponse>builder()
+                    .message("Success")
+                    .status(200)
+                    .data(user)
+                    .build();
+        }
+        return BaseResponse.<UserResponse>builder()
+                .message("User not found")
+                .status(404)
+                .build();
     }
 
     @Override
-    public List<BaseResponse<UserResponse>> getAll() {
-        return null;
+    public List<UserEntity> findByPage(Optional<Integer> page, Optional<Integer> size) {
+        if (page.isPresent()){
+            if (size.isPresent()){
+                return userRepository.findAll(PageRequest.of(page.get(), size.get())).getContent();
+            }
+            return userRepository.findAll(PageRequest.of(page.get(),10)).getContent();
+        }
+        return size.map(integer -> userRepository.findAll(PageRequest.of(0, integer)).getContent()).orElseGet(userRepository::findAll);
+
     }
     public BaseResponse<UserResponse> login(UserLoginDto auth) {
         UserEntity userEntity = userRepository.findByUsername(auth.getUsername())
@@ -72,4 +102,27 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         throw new DataNotFoundException("username/password is wrong");
     }
 
+    public Boolean addRole(UUID id, Role role) {
+        Optional<UserEntity> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            Set<Role> roles = user.get().getRoles();
+            roles.add(role);
+            user.get().setRoles(roles);
+            userRepository.save(user.get());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addPermission(UUID id, Permission permission) {
+        Optional<UserEntity> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+            Set<Permission> permissions = byId.get().getPermissions();
+            permissions.add(permission);
+            byId.get().setPermissions(permissions);
+            userRepository.save(byId.get());
+            return true;
+        }
+        return false;
+    }
 }

@@ -42,11 +42,6 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/dashboard")
                 .permitAll()
                 .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login")
-//                .permitAll()
-//                .and()
                 .build();
     }
 
