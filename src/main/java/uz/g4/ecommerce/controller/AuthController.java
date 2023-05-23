@@ -17,15 +17,16 @@ import uz.g4.ecommerce.service.user.UserService;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/login")
 public class AuthController {
 
     private final UserService userService;
 
-    @GetMapping("/login")
+    @GetMapping
     public String login() {
         return "index";
     }
-    @PostMapping ("/login")
+    @PostMapping
     public String login(@RequestBody UserLoginDto userLoginDto) {
         userService.login(userLoginDto);
         return "/dashboard";

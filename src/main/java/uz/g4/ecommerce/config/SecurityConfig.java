@@ -21,7 +21,7 @@ public class SecurityConfig {
     private final AuthService authService;
     private final PasswordEncoder passwordEncoder;
     private static final String[] WHITE_LIST = new String[]{
-            "/auth/**",
+            "/login/**",
             "/css/**",
             "/images/**"
 //            ,"/js/**"
@@ -42,11 +42,11 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/dashboard")
                 .permitAll()
                 .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/login")
-//                .permitAll()
-//                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .permitAll()
+                .and()
                 .build();
     }
 
