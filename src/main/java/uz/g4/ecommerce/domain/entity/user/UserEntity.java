@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
+import uz.g4.ecommerce.domain.entity.cart.CartEntity;
 
 import java.util.Collection;
 import java.util.Set;
@@ -26,10 +27,10 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private Set<Role> roles;
     @Enumerated(EnumType.STRING)
     private Set<Permission> permissions;
+    @OneToOne(mappedBy = "owner")
+    private CartEntity cart;
 
-    private Boolean accountNonExpired = true;
-    private Boolean accountNonLocked = true;
-    private Boolean credentialsNonExpired = true;
+
     private Boolean enabled = true;
 
     @Override
@@ -49,17 +50,17 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.accountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return this.credentialsNonExpired;
+        return true;
     }
 
     @Override
