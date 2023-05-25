@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
-
 import java.util.List;
 import java.util.Set;
 
@@ -15,8 +14,8 @@ import java.util.Set;
 @Entity(name = "category")
 @Builder
 public class CategoryEntity extends BaseEntity {
-    @Enumerated(EnumType.STRING)
-    private CategoryType type;
+    @Column(unique = true)
+    private String type;
     @OneToMany(mappedBy = "parent")
     private Set<CategoryEntity> children;
     @ManyToOne

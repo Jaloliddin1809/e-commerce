@@ -1,5 +1,6 @@
 package uz.g4.ecommerce.domain.dto.request;
 
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @NoArgsConstructor
@@ -8,6 +9,8 @@ import lombok.*;
 @Setter
 @Builder
 public class UserLoginRequest {
-    private String username;  //email,username or phone number
+    @Pattern(regexp = "^[A-Za-z]+$", message = "name is not valid")
+    private String username;
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$)", message = "password is not valid")
     private String password;
 }

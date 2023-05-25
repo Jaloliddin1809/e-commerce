@@ -16,6 +16,6 @@ public interface BaseService<BR,CD> {
     BR update(CD cd);
     Boolean delete(UUID id);
     BR getById(UUID id);
-    List<UserEntity> findByPage(Optional<Integer> page, Optional<Integer> size);
+    List<BR> findAll();
 
 }

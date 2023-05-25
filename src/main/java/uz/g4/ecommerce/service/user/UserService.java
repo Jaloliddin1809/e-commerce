@@ -29,7 +29,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     public BaseResponse<UserResponse> create(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {
             return BaseResponse.<UserResponse>builder()
-                    .message("Already exist by "+ userRequest.getUsername())
+                    .message("Already exist by " + userRequest.getUsername())
                     .status(400)
                     .build();
         }
@@ -38,7 +38,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         userRepository.save(user);
         return BaseResponse.<UserResponse>builder()
                 .message("Success")
-                .data(modelMapper.map(user,UserResponse.class))
+                .data(modelMapper.map(user, UserResponse.class))
                 .status(201)
                 .build();
     }
@@ -79,27 +79,38 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     }
 
     @Override
+    public List<BaseResponse<UserResponse>> findAll() {
+
+        return null;
+    }
+
     public List<UserEntity> findByPage(Optional<Integer> page, Optional<Integer> size) {
-        if (page.isPresent()){
-            if (size.isPresent()){
+        if (page.isPresent()) {
+            if (size.isPresent()) {
                 return userRepository.findAll(PageRequest.of(page.get(), size.get())).getContent();
             }
-            return userRepository.findAll(PageRequest.of(page.get(),10)).getContent();
+            return userRepository.findAll(PageRequest.of(page.get(), 10)).getContent();
         }
         return size.map(integer -> userRepository.findAll(PageRequest.of(0, integer)).getContent()).orElseGet(userRepository::findAll);
 
     }
+
     public BaseResponse<UserResponse> login(UserLoginRequest auth) {
-        UserEntity userEntity = userRepository.findByUsername(auth.getUsername())
-                .orElseThrow(() -> new DataNotFoundException("username/password is wrong"));
-        if(passwordEncoder.matches(auth.getPassword(), userEntity.getPassword())) {
-            BaseResponse.<UserResponse>builder()
-                    .message("Success")
-                    .data(modelMapper.map(userEntity,UserResponse.class))
-                    .status(200)
-                    .build();
+        Optional<UserEntity> userEntity = userRepository.findByUsername(auth.getUsername());
+        if (userEntity.isPresent()) {
+            UserEntity user = userEntity.get();
+            if (passwordEncoder.matches(auth.getPassword(), user.getPassword())) {
+                BaseResponse.<UserResponse>builder()
+                        .message(auth.getUsername() + " successfully signed")
+                        .data(modelMapper.map(userEntity, UserResponse.class))
+                        .status(200)
+                        .build();
+            }
         }
-        throw new DataNotFoundException("username/password is wrong");
+        return BaseResponse.<UserResponse>builder()
+                .message("username/password is wrong")
+                .status(400)
+                .build();
     }
 
     public Boolean addRole(UUID id, Role role) {

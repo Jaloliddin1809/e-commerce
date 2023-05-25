@@ -6,9 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
-import uz.g4.ecommerce.domain.entity.cart.CartEntity;
-
+import uz.g4.ecommerce.domain.entity.order.OrderEntity;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -20,16 +20,16 @@ import java.util.Set;
 public class UserEntity extends BaseEntity implements UserDetails {
     private String name;
     @Column(unique = true, nullable = false)
-    private String username;  // email or phone number
+    private String username;
     @Column(nullable = false)
     private String password;
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
     @Enumerated(EnumType.STRING)
     private Set<Permission> permissions;
-    @OneToOne(mappedBy = "owner")
-    private CartEntity cart;
 
+    @OneToMany(mappedBy = "user")
+    private List<OrderEntity> orders;
 
     private Boolean enabled = true;
 
