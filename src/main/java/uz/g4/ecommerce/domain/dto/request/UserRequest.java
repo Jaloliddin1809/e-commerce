@@ -1,23 +1,25 @@
 package uz.g4.ecommerce.domain.dto.request;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.hibernate.validator.constraints.Length;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
-
 import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class UserRequest {
+    @Pattern(regexp = "^[A-Za-z]+$", message = "name is not valid")
     private String name;
-    private String username;  // Admin username or users phone number
+    @Pattern(regexp = "^[A-Za-z]+$", message = "username is not valid")
+    private String username;
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$)", message = "password is not valid")
+    @Length(min = 8, max = 20, message = "must have between 8 and 20 characters")
     private String password;
     private Set<Role> roles;
     private Set<Permission> permissions;
-
 }

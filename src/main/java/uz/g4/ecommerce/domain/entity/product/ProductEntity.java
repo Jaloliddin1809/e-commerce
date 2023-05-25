@@ -3,11 +3,10 @@ package uz.g4.ecommerce.domain.entity.product;
 import jakarta.persistence.*;
 import lombok.*;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
-import uz.g4.ecommerce.domain.entity.cart.CartEntity;
 import uz.g4.ecommerce.domain.entity.category.CategoryEntity;
 import uz.g4.ecommerce.domain.entity.order.OrderEntity;
 
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,10 +21,6 @@ public class ProductEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private OrderEntity order;
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    private CartEntity cart;
+    @OneToMany(mappedBy = "product")
+    private List<OrderEntity> order;
 }

@@ -1,14 +1,12 @@
 package uz.g4.ecommerce.domain.entity.order;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
-
-import java.util.List;
 
 
 @AllArgsConstructor
@@ -18,9 +16,11 @@ import java.util.List;
 @Entity(name = "orders")
 @Builder
 public class OrderEntity extends BaseEntity {
-    @OneToOne
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
     private UserEntity user;
-    private OrderState orderState;
-    @OneToMany(mappedBy = "order")
-    private List<ProductEntity> products;
+    private OrderStatus orderState;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private ProductEntity product;
 }
