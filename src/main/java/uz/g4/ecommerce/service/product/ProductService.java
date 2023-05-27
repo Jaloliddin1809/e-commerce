@@ -1,7 +1,10 @@
 package uz.g4.ecommerce.service.product;
 
+import jakarta.persistence.criteria.Order;
 import uz.g4.ecommerce.domain.dto.request.ProductRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
+import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
+import uz.g4.ecommerce.domain.dto.response.OrderResponse;
 import uz.g4.ecommerce.domain.dto.response.ProductResponse;
 import uz.g4.ecommerce.service.BaseService;
 
@@ -29,8 +32,7 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
         return null;
     }
 
-    @Override
-    public List<BaseResponse<ProductResponse>> findAll() {
+    public List<OrderResponse> findAll() {
         return null;
     }
 

@@ -15,7 +15,8 @@
 </head>
 
 <body>
-<form class="form" action="/auth/login" method="post">
+<!--/*@thymesVar id="loginDto" type="uz.g4.ecommerce.domain.dto.request.UserLoginRequest"*/-->
+<form class="form" th:action="@{/auth/login}" method="post" th:object="${loginDto}">
     <div class="form-box">
         <h1 class="form-title">Login to your account</h1>
         <p class="form-text">Username</p>

@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.request.UserLoginRequest;
 import uz.g4.ecommerce.domain.dto.request.UserRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
+import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
-import uz.g4.ecommerce.domain.exception.DataNotFoundException;
-import uz.g4.ecommerce.repository.UserRepository;
+import uz.g4.ecommerce.repository.user.UserRepository;
 import uz.g4.ecommerce.service.BaseService;
 
 import java.util.*;
@@ -78,8 +78,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .build();
     }
 
-    @Override
-    public List<BaseResponse<UserResponse>> findAll() {
+    public List<UserResponse> findAll() {
 
         return null;
     }
@@ -100,7 +99,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         if (userEntity.isPresent()) {
             UserEntity user = userEntity.get();
             if (passwordEncoder.matches(auth.getPassword(), user.getPassword())) {
-                BaseResponse.<UserResponse>builder()
+               return BaseResponse.<UserResponse>builder()
                         .message(auth.getUsername() + " successfully signed")
                         .data(modelMapper.map(userEntity, UserResponse.class))
                         .status(200)

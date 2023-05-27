@@ -2,6 +2,7 @@ package uz.g4.ecommerce.service.order;
 
 import uz.g4.ecommerce.domain.dto.request.OrderRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
+import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
 import uz.g4.ecommerce.domain.dto.response.OrderResponse;
 import uz.g4.ecommerce.service.BaseService;
 
@@ -29,8 +30,7 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
         return null;
     }
 
-    @Override
-    public List<BaseResponse<OrderResponse>> findAll() {
+    public List<OrderResponse> findAll() {
         return null;
     }
 
