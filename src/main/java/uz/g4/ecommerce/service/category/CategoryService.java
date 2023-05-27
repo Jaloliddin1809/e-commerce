@@ -15,7 +15,7 @@ public class CategoryService implements BaseService<BaseResponse<CategoryRespons
     }
 
     @Override
-    public BaseResponse<CategoryResponse> update(CategoryRequest categoryRequest) {
+    public BaseResponse<CategoryResponse> update(CategoryRequest categoryRequest, UUID id) {
         return null;
     }
 

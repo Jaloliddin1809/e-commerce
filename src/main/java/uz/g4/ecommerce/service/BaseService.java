@@ -9,11 +9,14 @@ import java.beans.IntrospectionException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+/**
+ * @param <BR>> response
+ * @param <CD> create and update request
+ */
 @Service
 public interface BaseService<BR,CD> {
     BR create(CD cd);
-    BR update(CD cd);
+    BR update(CD cd, UUID id);
     Boolean delete(UUID id);
     BR getById(UUID id);
     List<BR> findAll();

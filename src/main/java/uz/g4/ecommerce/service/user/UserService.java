@@ -44,7 +44,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     }
 
     @Override
-    public BaseResponse<UserResponse> update(UserRequest userRequest) {
+    public BaseResponse<UserResponse> update(UserRequest userRequest, UUID id) {
         return null;
     }
 
@@ -57,8 +57,6 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
             return true;
         }
         return false;
-
-
     }
 
     @Override

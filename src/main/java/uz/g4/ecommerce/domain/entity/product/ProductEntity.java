@@ -15,6 +15,7 @@ import java.util.List;
 @Entity(name = "products")
 @Builder
 public class ProductEntity extends BaseEntity {
+    @Column(unique = true)
     private String name;
     private Double price;
     private Integer amount;
