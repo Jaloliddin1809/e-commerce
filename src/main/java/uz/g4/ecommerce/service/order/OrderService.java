@@ -16,7 +16,7 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
     }
 
     @Override
-    public BaseResponse<OrderResponse> update(OrderRequest orderRequest) {
+    public BaseResponse<OrderResponse> update(OrderRequest orderRequest, UUID id) {
         return null;
     }
 

@@ -12,4 +12,8 @@ public class BaseResponse<T> {
     private Integer status;
     private T data;
 
+    public BaseResponse(String message, Integer status) {
+        this.message = message;
+        this.status = status;
+    }
 }
