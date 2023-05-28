@@ -13,7 +13,7 @@ import uz.g4.ecommerce.service.user.UserService;
 import java.util.Set;
 
 @RestController
-@RequestMapping("auth/v1/api")
+@RequestMapping("/auth/v1/api")
 @RequiredArgsConstructor
 public class AddSuperAdminController {
     private final UserService userService;
