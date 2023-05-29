@@ -22,6 +22,6 @@ public class AddSuperAdminController {
     public BaseResponse<UserResponse> addSuperAdmin() {
         Set<Permission> perm = Set.of(Permission.ADD, Permission.EDIT, Permission.GET,Permission.DELETE);
         return userService.create(
-                new UserRequest("Name", "ADMIN", "123", Set.of(Role.SUPER_ADMIN), perm));
+                new UserRequest("Javohir", "ADMIN", "123", Set.of(Role.ADMIN), perm));
     }
 }
