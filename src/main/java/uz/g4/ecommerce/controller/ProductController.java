@@ -16,11 +16,16 @@ import uz.g4.ecommerce.service.user.UserService;
 
 import java.util.UUID;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/auth/product")
+@RequestMapping("/dashboard")
 public class ProductController {
     private final ProductService productService;
+    @GetMapping("/products")
+    public ModelAndView login(ModelAndView view) {
+        view.setViewName("product");
+        return view;
+    }
 
 //    @PostMapping("/add")
 //    public ModelAndView addProduct(
