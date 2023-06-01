@@ -1,10 +1,7 @@
 package uz.g4.ecommerce.domain.dto.request;
 
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -12,6 +9,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CategoryRequest {
     @Pattern(regexp = "^[A-Za-z]+$", message = "category type is not valid")
     private String type;

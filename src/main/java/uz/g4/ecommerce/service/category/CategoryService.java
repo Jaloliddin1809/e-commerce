@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.request.CategoryRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
+import uz.g4.ecommerce.domain.dto.response.ProductResponse;
 import uz.g4.ecommerce.domain.entity.category.CategoryEntity;
 import uz.g4.ecommerce.repository.category.CategoryRepository;
 import uz.g4.ecommerce.service.BaseService;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,7 +55,30 @@ public class CategoryService implements BaseService<BaseResponse<CategoryRespons
 
     @Override
     public BaseResponse<CategoryResponse> update(CategoryRequest categoryRequest, UUID id) {
-        return null;
+        Optional<CategoryEntity> category = repository.findById(id);
+        if (category.isPresent()) {
+            if (categoryRequest.getParentId() != null) {
+                category.get().setParent(repository.findById(categoryRequest.getParentId()).get());
+                category.get().setType(categoryRequest.getType());
+                repository.save(category.get());
+                return BaseResponse.<CategoryResponse>builder()
+                        .message("Success")
+                        .status(200)
+                        .data(mapper.map(category, CategoryResponse.class))
+                        .build();
+            }
+            category.get().setType(categoryRequest.getType());
+            repository.save(category.get());
+            return BaseResponse.<CategoryResponse>builder()
+                    .message("Success")
+                    .status(200)
+                    .data(mapper.map(category, CategoryResponse.class))
+                    .build();
+        }
+        return BaseResponse.<CategoryResponse>builder()
+                .message("Category not found")
+                .status(404)
+                .build();
     }
 
     @Override
@@ -79,5 +104,4 @@ public class CategoryService implements BaseService<BaseResponse<CategoryRespons
                 .map(entity -> mapper.map(entity, CategoryResponse.class))
                 .toList();
     }
-
 }
