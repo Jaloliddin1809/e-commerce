@@ -20,7 +20,7 @@ public class ProductRequest {
     private String name;
     @NotNull(message = "{price.notnull}")
     @NotEmpty(message = "{price.not empty}")
-    private Double price;
+    private Double price;   
     private Integer amount;
     private CategoryEntity category;
 

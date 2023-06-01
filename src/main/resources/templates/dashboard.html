@@ -16,11 +16,13 @@
 <label for="active" class="close"></label>
 <nav class="nav">
     <div class="nav-right">
-        <select class="custom-select" onchange="location.href = this.value;">
-            <option value="1" selected><p th:text="${#authentication.principal.name}"></p></option>
-            <option class="opt" value="/logout">Logout</option>
-        </select>
-        <img class="nav-icon" src="./images/user3.png" alt="User">
+        <label>
+            <select class="custom-select" onchange="location.href = this.value;">
+                <option value="1" selected><p th:text="${#authentication.principal.name}"></p></option>
+                <option class="opt" value="/logout">Logout</option>
+            </select>
+        </label>
+        <img class="nav-icon" src="/images/user3.png" alt="User">
     </div>
 </nav>
 <div class="wrapper">

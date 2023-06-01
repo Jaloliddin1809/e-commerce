@@ -40,7 +40,6 @@ public class AuthController {
             return view;
         }
         Authentication auth= SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getName());
         view.addObject("user", auth.getName());
         userService.login(userLoginRequest);
         view.setViewName("dashboard");

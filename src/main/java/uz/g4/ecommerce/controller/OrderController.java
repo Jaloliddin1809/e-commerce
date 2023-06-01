@@ -9,9 +9,4 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 @RequestMapping("/dashboard")
 public class OrderController {
-    @GetMapping("/orders")
-    public ModelAndView login(ModelAndView view) {
-        view.setViewName("order");
-        return view;
-    }
 }

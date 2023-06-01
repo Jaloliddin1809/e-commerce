@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.request.UserLoginRequest;
 import uz.g4.ecommerce.domain.dto.request.UserRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
-import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
@@ -76,8 +75,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .build();
     }
 
-    public List<UserResponse> findAll() {
-
+    public List<BaseResponse<UserResponse>> findAll() {
         return null;
     }
 
@@ -97,7 +95,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         if (userEntity.isPresent()) {
             UserEntity user = userEntity.get();
             if (passwordEncoder.matches(auth.getPassword(), user.getPassword())) {
-               return BaseResponse.<UserResponse>builder()
+                return BaseResponse.<UserResponse>builder()
                         .message(auth.getUsername() + " successfully signed")
                         .data(modelMapper.map(userEntity, UserResponse.class))
                         .status(200)
