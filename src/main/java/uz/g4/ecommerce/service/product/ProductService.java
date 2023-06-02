@@ -2,6 +2,7 @@ package uz.g4.ecommerce.service.product;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.request.HistoryRequest;
@@ -37,6 +38,16 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
 
     @Override
     public BaseResponse<ProductResponse> create(ProductRequest productRequest) {
+        ProductEntity product = modelMapper.map(productRequest, ProductEntity.class);
+        if(productRepository.existsByName(product.getName())){
+            return BaseResponse.<ProductResponse>builder()
+                    .message("Already exists name "+product.getName())
+                    .status(404)
+                    .build();
+        }
+//         if (Objects.nonNull(product.getName())&&Objects.nonNull(product.getPrice())) {
+//             productRepository.save(product);
+//         }
 
         BaseResponse<CategoryResponse> byId = categoryService.getById(productRequest.getCategory());
 
@@ -114,12 +125,29 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                 .status(400)
                 .build();
     }
+  
+    public BaseResponse<List<ProductResponse>> getListProductsByCategoryId(UUID categoryId) {
+        return BaseResponse.<List<ProductResponse>>builder()
+                .data(modelMapper
+                        .map(productRepository.getProductEntitiesByCategory_Id(categoryId),
+                                new TypeToken<List<ProductResponse>>(){}.getType()))
+                .message("success")
+                .status(200)
+                .build();
+    }
+    public BaseResponse<List<ProductResponse>> findAll() {
+        List<ProductEntity> list = productRepository.findAll();
+        return BaseResponse.<List<ProductResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(modelMapper.map(list,
+                        new TypeToken<List<ProductResponse>>(){}.getType()))
+                .build();
 
-
-    public List<ProductResponse> getListByCategoryId(UUID categoryId) {
-       return productRepository.findProductEntityByCategory_Id(categoryId).stream()
-                .map((product) -> modelMapper.map(product, ProductResponse.class))
-                .collect(Collectors.toList());
+//     public List<ProductResponse> getListByCategoryId(UUID categoryId) {
+//        return productRepository.findProductEntityByCategory_Id(categoryId).stream()
+//                 .map((product) -> modelMapper.map(product, ProductResponse.class))
+//                 .collect(Collectors.toList());
     }
 
     public List<ProductResponse> findByPage(Optional<Integer> page, Optional<Integer> size) {
@@ -153,6 +181,8 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                 .map((product) -> modelMapper.map(product, ProductResponse.class))
                 .collect(Collectors.toList());
     }
+    public Optional<ProductEntity> getOneProduct(UUID id) {
+        return productRepository.findById(id);
 
     public BaseResponse<ProductResponse> getByName(String data) {
         Optional<ProductEntity> productEntityByName = productRepository.findProductEntityByName(data);

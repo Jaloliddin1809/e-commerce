@@ -2,13 +2,16 @@ package uz.g4.ecommerce.service.category;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.request.CategoryRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
+import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.dto.response.ProductResponse;
 import uz.g4.ecommerce.domain.entity.category.CategoryEntity;
+import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.repository.category.CategoryRepository;
 import uz.g4.ecommerce.service.BaseService;
 
@@ -109,11 +112,23 @@ public class CategoryService implements BaseService<BaseResponse<CategoryRespons
                 .build();
     }
 
-    public List<CategoryResponse> findAll() {
-        return repository.findAll()
-                .stream()
-                .map(entity -> mapper.map(entity, CategoryResponse.class))
-                .toList();
+    public BaseResponse<List<CategoryResponse>> findAll() {
+        List<CategoryEntity> list =repository.findAll();
+        return BaseResponse.<List<CategoryResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(mapper.map(list,
+                        new TypeToken<List<CategoryResponse>>(){}.getType()))
+                .build();
+    }
+    public BaseResponse<List<CategoryResponse>> findAllChildCategories() {
+        List<CategoryEntity> list =repository.findByParentIdNotNull();
+        return BaseResponse.<List<CategoryResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(mapper.map(list,
+                        new TypeToken<List<CategoryResponse>>(){}.getType()))
+                .build();
     }
 
     public List<CategoryResponse> getParentCategories() {

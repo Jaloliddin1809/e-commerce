@@ -11,6 +11,8 @@ import java.util.UUID;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, UUID> {
+    List<CategoryEntity> findByParentIdNotNull();
+    
     @Query("select c from category c where c.parent.id = null")
     List<CategoryEntity> findByParentCategory();
 

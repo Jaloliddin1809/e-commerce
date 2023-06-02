@@ -24,4 +24,5 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
     @Query("update products p set p.amount = p.amount + :amount where p.id = :id")
     void plusProductAmount(@Param("amount") Integer amount, @Param("id") UUID id);
     List<ProductEntity> getProductEntitiesByCategory_Id(UUID categoryId);
+    Boolean existsByName(String name);
 }

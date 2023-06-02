@@ -11,6 +11,17 @@ import uz.g4.ecommerce.controller.bot.BotController;
 @Component
 @RequiredArgsConstructor
 public class BotInitializer {
+    private final TelegramBot telegramBot;
+//    @Bean
+//    public void init() {
+//        try {
+//            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+//            botsApi.registerBot((LongPollingBot) telegramBot);
+//            System.out.println("started");
+//        } catch (TelegramApiException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
     private final BotController controller;
 
     @Bean

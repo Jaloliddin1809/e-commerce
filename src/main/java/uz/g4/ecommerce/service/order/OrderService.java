@@ -7,6 +7,8 @@ import uz.g4.ecommerce.domain.dto.request.OrderRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.OrderResponse;
 import uz.g4.ecommerce.domain.entity.order.OrderEntity;
+import uz.g4.ecommerce.domain.entity.product.ProductEntity;
+import uz.g4.ecommerce.repository.order.OrderRepository;
 import uz.g4.ecommerce.repository.order.OrderRepository;
 import uz.g4.ecommerce.repository.product.ProductRepository;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
@@ -102,6 +104,12 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
         return null;
     }
 
+    public List<OrderResponse> findAllStateNotInCart(){
+       return orderRepository
+               .findAllByStateNotInCart().stream()
+               .map((order) -> mapper.map(order, OrderResponse.class))
+               .collect(Collectors.toList());
+    }
     public BaseResponse<OrderResponse> removeAll(Long chatId) {
         List<OrderEntity> byChatId = orderRepository.findByChatId(chatId);
 

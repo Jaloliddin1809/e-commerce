@@ -7,6 +7,7 @@ import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
 import uz.g4.ecommerce.domain.entity.user.UserState;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -33,7 +34,17 @@ public class UserRequest {
     private Set<Role> roles;
 
     private Set<Permission> permissions;
+  
     private String chatId;
+  
     private UserState userState;
+  
     private Double balance;
+
+    public UserRequest(String name, String username, String password) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+    }
+    
 }
