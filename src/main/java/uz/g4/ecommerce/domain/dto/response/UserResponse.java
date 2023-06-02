@@ -17,6 +17,7 @@ public class UserResponse {
     private String name;
     private String username;
     private String password;
+    private Double balance;
     private Set<Role> roles;
     private Set<Permission> permissions;
     private Boolean enabled = true;

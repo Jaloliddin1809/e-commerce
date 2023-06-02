@@ -1,8 +1,6 @@
 package uz.g4.ecommerce.domain.entity.order;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
@@ -19,8 +17,10 @@ public class OrderEntity extends BaseEntity {
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private UserEntity user;
+    private Integer amount;
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderState;
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
 }

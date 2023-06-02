@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
+import uz.g4.ecommerce.domain.entity.user.UserState;
+
 import java.util.Set;
 
 @Getter
@@ -22,4 +24,7 @@ public class UserRequest {
     private String password;
     private Set<Role> roles;
     private Set<Permission> permissions;
+    private String chatId;
+    private UserState userState;
+    private Double balance;
 }
