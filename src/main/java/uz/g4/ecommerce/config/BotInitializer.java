@@ -12,14 +12,14 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 @RequiredArgsConstructor
 public class BotInitializer {
     private final TelegramBot telegramBot;
-    @Bean
-    public void init() {
-        try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot((LongPollingBot) telegramBot);
-            System.out.println("started");
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @Bean
+//    public void init() {
+//        try {
+//            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+//            botsApi.registerBot((LongPollingBot) telegramBot);
+//            System.out.println("started");
+//        } catch (TelegramApiException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

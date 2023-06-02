@@ -2,14 +2,14 @@ package uz.g4.ecommerce.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.request.UserLoginRequest;
 import uz.g4.ecommerce.domain.dto.request.UserRequest;
-import uz.g4.ecommerce.domain.dto.response.BaseResponse;
-import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
-import uz.g4.ecommerce.domain.dto.response.UserResponse;
+import uz.g4.ecommerce.domain.dto.response.*;
+import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
@@ -45,15 +45,47 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
 
     @Override
     public BaseResponse<UserResponse> update(UserRequest userRequest, UUID id) {
-        return null;
+        UserEntity user = userRepository.getById(id);
+        try {
+            if (Objects.nonNull(userRequest.getName())) {
+                user.setName(userRequest.getName());
+            }
+            if (Objects.nonNull(user.getUsername())) {
+                user.setUsername(userRequest.getUsername());
+            }
+            if (Objects.nonNull(user.getUsername())) {
+                user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+            }
+            if (Objects.nonNull(user.getRoles())) {
+                user.setRoles(userRequest.getRoles());
+            }
+            if (Objects.nonNull(user.getPermissions())) {
+                user.setPermissions(userRequest.getPermissions());
+            }
+            userRepository.save(user);
+            return BaseResponse.<UserResponse>builder()
+                    .message("User updated ")
+                    .status(200)
+                    .data(modelMapper.map(user, UserResponse.class))
+                    .build();
+        }catch (Exception e){
+            return BaseResponse.<UserResponse>builder()
+                    .message("User not updating ")
+                    .status(400)
+                    .build();
+        }
     }
 
     @Override
     public Boolean delete(UUID id) {
         Optional<UserEntity> user = userRepository.findById(id);
+//        if (user.isPresent()) {
+//            user.get().setEnabled(false);
+//            userRepository.save(user.get());
+//            return true;
+//        }
         if (user.isPresent()) {
-            user.get().setEnabled(false);
-            userRepository.save(user.get());
+            userRepository.delete(user.get());
             return true;
         }
         return false;
@@ -75,10 +107,43 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .status(404)
                 .build();
     }
+    public Optional<UserEntity> getOneUser(UUID id) {
+        return userRepository.findById(id);
+    }
 
-    public List<UserResponse> findAll() {
+    public BaseResponse<List<UserResponse>> findAll() {
+        List<UserEntity> userEntities = userRepository.findAll();
+        return BaseResponse.<List<UserResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(modelMapper.map(userEntities,
+                        new TypeToken<List<UserResponse>>(){}.getType()))
+                .build();
+    }
+    public BaseResponse<List<UserResponse>> findAllEmployees() {
+        List<Role> excludedRoles = Arrays.asList(Role.USER);
+        List<UserEntity> userEntities = userRepository.findAllUsersExceptRoles(excludedRoles);
+        return BaseResponse.<List<UserResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(modelMapper.map(userEntities,
+                        new TypeToken<List<UserResponse>>(){}.getType()))
+                .build();
+    }
 
-        return null;
+    public BaseResponse<List<UserResponse>> getAllTelegramUsers(){
+        List<UserEntity> botUsers = userRepository.findAll()
+                .stream()
+                .filter(userEntity -> userEntity.getRoles().contains(Role.USER))
+                .toList();
+        return BaseResponse.<List<UserResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(
+                        modelMapper.map(botUsers,
+                                new TypeToken<List<UserResponse>>(){}.getType())
+                )
+                .build();
     }
 
     public List<UserEntity> findByPage(Optional<Integer> page, Optional<Integer> size) {

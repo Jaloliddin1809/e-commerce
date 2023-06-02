@@ -21,6 +21,6 @@ public class OrderEntity extends BaseEntity {
     private UserEntity user;
     private OrderStatus orderState;
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
 }

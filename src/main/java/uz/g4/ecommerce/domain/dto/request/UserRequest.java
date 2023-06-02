@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
 import java.util.Set;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -22,4 +23,10 @@ public class UserRequest {
     private String password;
     private Set<Role> roles;
     private Set<Permission> permissions;
+
+    public UserRequest(String name, String username, String password) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+    }
 }

@@ -14,12 +14,11 @@ import uz.g4.ecommerce.domain.entity.category.CategoryEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductRequest {
-    @NotEmpty
-    @NotNull
-    @Pattern(regexp = "^[A-Za-z]+$", message = "name is not valid")
+//    @NotEmpty
+//    @NotNull
+//    @Pattern(regexp = "^[A-Za-z]+$", message = "name is not valid")
     private String name;
-    @NotNull(message = "{price.notnull}")
-    @NotEmpty(message = "{price.not empty}")
+
     private Double price;
     private Integer amount;
     private CategoryEntity category;
