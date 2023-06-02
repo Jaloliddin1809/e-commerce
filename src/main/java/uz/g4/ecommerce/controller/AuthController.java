@@ -1,6 +1,8 @@
 package uz.g4.ecommerce.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -37,7 +39,8 @@ public class AuthController {
             view.setViewName("index");
             return view;
         }
-
+        Authentication auth= SecurityContextHolder.getContext().getAuthentication();
+        view.addObject("user", auth.getName());
         userService.login(userLoginRequest);
         view.setViewName("dashboard");
         return view;

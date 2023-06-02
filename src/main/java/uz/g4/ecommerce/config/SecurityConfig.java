@@ -24,6 +24,7 @@ public class SecurityConfig {
             "/css/**",
             "/images/**",
             "/auth/**",
+            "/js/**"
     };
 
 
@@ -32,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/dashboard").hasRole("SUPER_ADMIN")
+                .requestMatchers("/dashboard").hasAnyRole("SUPER_ADMIN", "ADMIN", "ACCOUNTANT")
                 .requestMatchers(WHITE_LIST).permitAll()
                 .anyRequest()
                 .authenticated()

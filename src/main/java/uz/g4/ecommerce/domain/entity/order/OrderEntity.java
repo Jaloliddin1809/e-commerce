@@ -14,7 +14,7 @@ import uz.g4.ecommerce.domain.entity.user.UserEntity;
 @Entity(name = "orders")
 @Builder
 public class OrderEntity extends BaseEntity {
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
     private Integer amount;

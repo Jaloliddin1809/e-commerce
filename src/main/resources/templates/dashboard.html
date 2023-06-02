@@ -2,9 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DashBoard</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>Dashboard</title>
 </head>
 <body>
-<h1>this is for admin</h1>
+<input type="checkbox" id="active">
+<label for="active" class="menu-btn"><span></span></label>
+<label for="active" class="close"></label>
+<nav class="nav">
+    <div class="nav-right">
+        <label>
+            <select class="custom-select" onchange="location.href = this.value;">
+                <option value="1" selected><p th:text="${#authentication.principal.name}"></p></option>
+                <option class="opt" value="/logout">Logout</option>
+            </select>
+        </label>
+        <img class="nav-icon" src="/images/user3.png" alt="User">
+    </div>
+</nav>
+<div class="wrapper">
+    <ul>
+        <li><a href="/dashboard/categories">Categories</a></li>
+        <li><a href="/dashboard/products">Products</a></li>
+        <li><a href="/dashboard/orders">Orders</a></li>
+        <li><a href="/dashboard/employees">Employees</a></li>
+    </ul>
+</div>
+<div class="content">
+    <div class="title">
+        Welcome to personal dashboard</div>
+</div>
 </body>
 </html>

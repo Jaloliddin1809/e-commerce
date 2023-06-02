@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap Simple Data Table</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <title>Product</title>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</head>
+<body>
+<input type="checkbox" id="active">
+<label for="active" class="menu-btn"><span></span></label>
+<label for="active" class="close"></label>
+<nav class="nav">
+    <div class="nav-right">
+        <select class="custom-select" onchange="location.href = this.value;">
+            <option value="1" selected><p th:text="${#authentication.principal.name}"></p></option>
+            <option class="opt" value="/logout">Logout</option>
+        </select>
+        <img class="nav-icon" src="/images/user3.png" alt="User">
+    </div>
+</nav>
+<div class="wrapper">
+    <ul>
+        <li><a href="/dashboard/categories">Categories</a></li>
+        <li><a href="/dashboard/products">Products</a></li>
+        <li><a href="/dashboard/orders">Orders</a></li>
+        <li><a href="/dashboard/employees">Employees</a></li>
+    </ul>
+</div>
+<div class="container">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2>Product <b>Details</b></h2></div>
+                    <!--          <div class="col-sm-4">-->
+                    <!--            <div class="search-box">-->
+                    <!--              <i class="material-icons">&#xE8B6;</i>-->
+                    <!--              <input type="text" class="form-control" placeholder="Search&hellip;">-->
+                    <!--            </div>-->
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name <i class="fa fa-sort"></i></th>
+                <th>Price</th>
+                <th>Amount <i class="fa fa-sort"></i></th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product,itemStat:${products}">
+                <td th:text="${itemStat.count}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.price}"></td>
+                <td th:text="${product.amount}"></td>
+                <td th:text="${product.category}"></td>
+                <td>
+                    <a href="#" class="view" title="View" data-toggle="tooltip"><i
+                            class="material-icons">&#xE417;</i></a>
+                    <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i
+                            class="material-icons">&#xE254;</i></a>
+                    <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
+                            class="material-icons">&#xE872;</i></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--      <div class="clearfix">-->
+        <!--        <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>-->
+        <!--        <ul class="pagination">-->
+        <!--          <li class="page-item disabled"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>-->
+        <!--          <li class="page-item"><a href="#" class="page-link">1</a></li>-->
+        <!--          <li class="page-item"><a href="#" class="page-link">2</a></li>-->
+        <!--          <li class="page-item active"><a href="#" class="page-link">3</a></li>-->
+        <!--          <li class="page-item"><a href="#" class="page-link">4</a></li>-->
+        <!--          <li class="page-item"><a href="#" class="page-link">5</a></li>-->
+        <!--          <li class="page-item"><a href="#" class="page-link"><i class="fa fa-angle-double-right"></i></a></li>-->
+        <!--        </ul>-->
+        <!--      </div>-->
+        <!--    </div>-->
+    </div>
+</div>
+</body>
+</html>

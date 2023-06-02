@@ -9,20 +9,21 @@ import uz.g4.ecommerce.domain.dto.response.OrderResponse;
 import uz.g4.ecommerce.domain.entity.order.OrderEntity;
 import uz.g4.ecommerce.repository.order.OrderRepository;
 import uz.g4.ecommerce.repository.product.ProductRepository;
+import uz.g4.ecommerce.domain.entity.user.UserEntity;
+import uz.g4.ecommerce.repository.order.OrderRepository;
+import uz.g4.ecommerce.repository.user.UserRepository;
 import uz.g4.ecommerce.service.BaseService;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class OrderService implements BaseService<BaseResponse<OrderResponse>, OrderRequest> {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final ModelMapper mapper;
-
     @Override
     public BaseResponse<OrderResponse> create(OrderRequest orderRequest) {
 

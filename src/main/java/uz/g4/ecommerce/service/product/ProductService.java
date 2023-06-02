@@ -79,8 +79,9 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
             return BaseResponse.<ProductResponse>builder()
                     .status(200)
                     .message("Successfully updated")
+                    .data(modelMapper.map(product, ProductResponse.class))
                     .build();
-        }
+        } 
         return BaseResponse.<ProductResponse>builder()
                 .message("Product not found")
                 .status(400)
@@ -90,7 +91,7 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
 
     @Override
     public Boolean delete(UUID id) {
-        Optional<ProductEntity> product = productRepository.findById(id);
+            Optional<ProductEntity> product = productRepository.findById(id);
         if (product.isPresent()) {
             productRepository.delete(product.get());
             return true;
@@ -148,7 +149,6 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
         if (productEntityByCategoryId.isEmpty()) {
             return null;
         }
-
         return productEntityByCategoryId.stream()
                 .map((product) -> modelMapper.map(product, ProductResponse.class))
                 .collect(Collectors.toList());
