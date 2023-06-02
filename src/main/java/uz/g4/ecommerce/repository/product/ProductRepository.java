@@ -14,4 +14,5 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
 //    Optional<ProductEntity> findById(UUID id);
     List<ProductEntity> getProductEntitiesByCategory_Id(UUID categoryId);
+    Boolean existsByName(String name);
 }

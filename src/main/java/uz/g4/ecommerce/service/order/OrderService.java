@@ -1,15 +1,27 @@
 package uz.g4.ecommerce.service.order;
 
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.request.OrderRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
 import uz.g4.ecommerce.domain.dto.response.OrderResponse;
+import uz.g4.ecommerce.domain.entity.order.OrderEntity;
+import uz.g4.ecommerce.domain.entity.product.ProductEntity;
+import uz.g4.ecommerce.repository.order.OrderRepository;
 import uz.g4.ecommerce.service.BaseService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+@Service
+@RequiredArgsConstructor
 public class OrderService implements BaseService<BaseResponse<OrderResponse>, OrderRequest> {
+    private final OrderRepository orderRepository;
+    private final ModelMapper modelMapper;
     @Override
     public BaseResponse<OrderResponse> create(OrderRequest orderRequest) {
         return null;
@@ -32,6 +44,14 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
 
     public List<OrderResponse> findAll() {
         return null;
+    }
+
+
+    public List<OrderResponse> findAllStateNotInCart(){
+       return orderRepository
+               .findAllByStateNotInCart().stream()
+               .map((order) -> modelMapper.map(order, OrderResponse.class))
+               .collect(Collectors.toList());
     }
 
 }
