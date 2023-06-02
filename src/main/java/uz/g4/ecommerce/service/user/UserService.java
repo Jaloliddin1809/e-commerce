@@ -6,13 +6,13 @@ import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.g4.ecommerce.domain.dto.request.UserLoginRequest;
-import uz.g4.ecommerce.domain.dto.request.UserRequest;
 import uz.g4.ecommerce.domain.dto.response.*;
+import uz.g4.ecommerce.domain.dto.request.*;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
+import uz.g4.ecommerce.domain.entity.user.UserState;
 import uz.g4.ecommerce.repository.user.UserRepository;
 import uz.g4.ecommerce.service.BaseService;
 
@@ -39,7 +39,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         return BaseResponse.<UserResponse>builder()
                 .message("Success")
                 .data(modelMapper.map(user, UserResponse.class))
-                .status(201)
+                .status(200)
                 .build();
     }
 
@@ -79,11 +79,6 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     @Override
     public Boolean delete(UUID id) {
         Optional<UserEntity> user = userRepository.findById(id);
-//        if (user.isPresent()) {
-//            user.get().setEnabled(false);
-//            userRepository.save(user.get());
-//            return true;
-//        }
         if (user.isPresent()) {
             userRepository.delete(user.get());
             return true;
@@ -107,6 +102,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .status(404)
                 .build();
     }
+  
     public Optional<UserEntity> getOneUser(UUID id) {
         return userRepository.findById(id);
     }
@@ -131,21 +127,6 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .build();
     }
 
-    public BaseResponse<List<UserResponse>> getAllTelegramUsers(){
-        List<UserEntity> botUsers = userRepository.findAll()
-                .stream()
-                .filter(userEntity -> userEntity.getRoles().contains(Role.USER))
-                .toList();
-        return BaseResponse.<List<UserResponse>>builder()
-                .status(200)
-                .message("success")
-                .data(
-                        modelMapper.map(botUsers,
-                                new TypeToken<List<UserResponse>>(){}.getType())
-                )
-                .build();
-    }
-
     public List<UserEntity> findByPage(Optional<Integer> page, Optional<Integer> size) {
         if (page.isPresent()) {
             if (size.isPresent()) {
@@ -162,7 +143,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         if (userEntity.isPresent()) {
             UserEntity user = userEntity.get();
             if (passwordEncoder.matches(auth.getPassword(), user.getPassword())) {
-               return BaseResponse.<UserResponse>builder()
+                return BaseResponse.<UserResponse>builder()
                         .message(auth.getUsername() + " successfully signed")
                         .data(modelMapper.map(userEntity, UserResponse.class))
                         .status(200)
@@ -197,5 +178,73 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
             return true;
         }
         return false;
+    }
+
+    public BaseResponse<UserStateDto> getUserState(Long chatId) {
+        Optional<UserEntity> userEntity = userRepository.findUserEntityByChatId(chatId);
+        if (userEntity.isPresent()) {
+            return BaseResponse.<UserStateDto>builder()
+                    .message("success")
+                    .status(200)
+                    .data(new UserStateDto(userEntity.get().getChatId(), userEntity.get().getUserState()))
+                    .build();
+        }
+        return BaseResponse.<UserStateDto>builder()
+                .message("fail")
+                .status(400)
+                .build();
+    }
+
+    public void updateState(UserStateDto userStateDto) {
+      userRepository.updateUserState(userStateDto.getState(), userStateDto.getChatId());
+    }
+
+    public BaseResponse<Double> getBalance(Long chatId) {
+        Optional<UserEntity> entity = userRepository.findUserEntityByChatId(chatId);
+        if (entity.isPresent()) {
+            return BaseResponse.<Double>builder()
+                    .data(entity.get().getBalance())
+                    .build();
+        }
+        return BaseResponse.<Double>builder()
+                .data(null)
+                .build();
+    }
+
+    public BaseResponse<UserResponse> fillBalance(Long chatId, String text) {
+        if (text.matches("\\d+")) {
+            Optional<UserEntity> userEntityByChatId = userRepository.findUserEntityByChatId(chatId);
+            if (userEntityByChatId.isPresent()) {
+                  userRepository.updateUserBalance(Double.valueOf(text), chatId);
+                  return BaseResponse.<UserResponse>builder()
+                          .message("balance changed")
+                          .status(200)
+                          .build();
+            }
+        }
+        return BaseResponse.<UserResponse>builder()
+                .message("Amount is not valid")
+                .status(400)
+                .build();
+    }
+
+    public BaseResponse<UserResponse> getByChatId(Long chatId) {
+        Optional<UserEntity> user = userRepository.findUserEntityByChatId(chatId);
+
+        if (user.isPresent()) {
+            return BaseResponse.<UserResponse>builder()
+                    .message("success")
+                    .status(200)
+                    .data(modelMapper.map(user.get(), UserResponse.class))
+                    .build();
+        }
+        return BaseResponse.<UserResponse>builder()
+                .message("fail")
+                .status(400)
+                .build();
+    }
+
+    public void updateBalance(UUID id, double minusAmount) {
+        userRepository.cutUserBalance(id, minusAmount);
     }
 }

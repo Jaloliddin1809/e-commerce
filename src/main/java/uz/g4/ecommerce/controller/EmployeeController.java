@@ -9,7 +9,10 @@ import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.service.user.UserService;
-
+import org.springframework.web.servlet.ModelAndView;
+import uz.g4.ecommerce.domain.entity.user.UserEntity;
+import uz.g4.ecommerce.service.user.UserService;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,6 +47,19 @@ public class EmployeeController {
     public String updateUser(@RequestParam("id") UUID id, @ModelAttribute UserRequest userRequest) {
         userService.update(userRequest, id);
         return "redirect:/dashboard/employees";
-    }
+
+
+//     @GetMapping("/employees")
+//     public String findByPage(Model model) {
+//         model.addAttribute("users", userService.findByPage(Optional.of(0), Optional.of(500)));
+//         return "employees";
+//     }
+//     @GetMapping("/employees/delete/{id}")
+//     public String delete(
+//             @PathVariable(value = "id")UUID id
+//     ){
+//         userService.delete(id);
+//         return "employees";
+//     }
 
 }

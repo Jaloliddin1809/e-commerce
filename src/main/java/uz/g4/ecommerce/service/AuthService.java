@@ -11,7 +11,6 @@ import uz.g4.ecommerce.repository.user.UserRepository;
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
     private final UserRepository userRepository;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).orElseThrow(() ->
