@@ -333,6 +333,7 @@ public class BotService {
         return goToMyBasket(chatId, messageId);
     }
 
+
     public EditMessageText removeOrder(String data, Long chatId, Integer messageId) {
         orderService.delete(UUID.fromString(data.substring(6)));
         EditMessageText edit = new EditMessageText();
