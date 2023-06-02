@@ -1,19 +1,21 @@
 package uz.g4.ecommerce.domain.dto.response;
 
 import lombok.*;
-import uz.g4.ecommerce.domain.entity.category.CategoryEntity;
-
+import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Builder
-public class CategoryResponse {
-    private String type;
-    private CategoryEntity parentId;
+public class HistoryResponse {
+    private String productName;
+    private Double price;
+    private Integer amount;
+    private Double totalPrice;
+    private UserEntity user;
     private UUID id;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;

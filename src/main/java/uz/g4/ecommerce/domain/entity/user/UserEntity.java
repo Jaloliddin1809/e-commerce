@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
+import uz.g4.ecommerce.domain.entity.history.HistoryEntity;
 import uz.g4.ecommerce.domain.entity.order.OrderEntity;
 import java.util.Collection;
 import java.util.List;
@@ -27,10 +28,14 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private Set<Role> roles;
     @Enumerated(EnumType.STRING)
     private Set<Permission> permissions;
-
+    private Long chatId;
+    @Enumerated(EnumType.STRING)
+    private UserState userState;
+    private Double balance = 10000D;
     @OneToMany(mappedBy = "user")
     private List<OrderEntity> orders;
-
+    @OneToMany(mappedBy = "user")
+    private List<HistoryEntity> histories;
     private Boolean enabled = true;
 
     @Override

@@ -5,7 +5,6 @@ import lombok.*;
 import uz.g4.ecommerce.domain.entity.BaseEntity;
 import uz.g4.ecommerce.domain.entity.category.CategoryEntity;
 import uz.g4.ecommerce.domain.entity.order.OrderEntity;
-
 import java.util.List;
 
 @AllArgsConstructor

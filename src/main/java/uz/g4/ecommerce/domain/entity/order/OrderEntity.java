@@ -17,9 +17,10 @@ public class OrderEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+    private Integer amount;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderState;
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "product_id")
     private ProductEntity product;
 }

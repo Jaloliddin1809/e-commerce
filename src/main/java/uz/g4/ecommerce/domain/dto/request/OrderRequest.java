@@ -1,9 +1,6 @@
 package uz.g4.ecommerce.domain.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import uz.g4.ecommerce.domain.entity.order.OrderStatus;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
@@ -12,8 +9,10 @@ import uz.g4.ecommerce.domain.entity.user.UserEntity;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class OrderRequest {
-   private UserEntity userId;
-   private OrderStatus orderStatus;
-   private ProductEntity productId;
+   private UserEntity user;
+   private Integer amount;
+   private OrderStatus orderState;
+   private ProductEntity product;
 }

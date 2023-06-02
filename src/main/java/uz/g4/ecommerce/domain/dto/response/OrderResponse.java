@@ -18,6 +18,7 @@ import java.util.UUID;
 public class OrderResponse {
     private UserEntity user;
     private OrderStatus orderState;
+    private Integer amount;
     private ProductEntity product;
     private UUID id;
     private LocalDateTime createdDate;

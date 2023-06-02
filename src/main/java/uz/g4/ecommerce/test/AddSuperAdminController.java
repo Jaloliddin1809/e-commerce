@@ -25,7 +25,11 @@ public class AddSuperAdminController {
     public BaseResponse<UserResponse> addSuperAdmin() {
         Set<Permission> perm = Set.of(Permission.ADD, Permission.EDIT, Permission.GET, Permission.DELETE);
         return userService.create(
-                new UserRequest("Jaloliddin", "Accountant", "123", Set.of(Role.ACCOUNTANT), perm));
+// <<<<<<< bot
+//                 new UserRequest("Name", "ADMIN", "123", Set.of(Role.SUPER_ADMIN), perm, null, null, null));
+// =======
+//                 new UserRequest("Jaloliddin", "Accountant", "123", Set.of(Role.ACCOUNTANT), perm));
+// >>>>>>> main
     }
 //
 //    @GetMapping("/add_category")
