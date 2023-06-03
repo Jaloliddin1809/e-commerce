@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryEntity, UUID> {
+    Boolean existsByType(String type);
     List<CategoryEntity> findByParentIdNotNull();
     
     @Query("select c from category c where c.parent.id = null")

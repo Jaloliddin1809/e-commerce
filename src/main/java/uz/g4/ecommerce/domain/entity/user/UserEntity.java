@@ -72,4 +72,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
     public boolean isEnabled() {
         return this.enabled;
     }
+
+    public UserEntity(String name, String username, String password, Set<Role> roles, Set<Permission> permissions) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.permissions = permissions;
+    }
 }

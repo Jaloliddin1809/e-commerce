@@ -35,6 +35,7 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/dashboard").hasAnyRole("SUPER_ADMIN", "ADMIN", "ACCOUNTANT")
+                .requestMatchers("/dashboard/employees").hasAnyRole("SUPER_ADMIN")
                 .requestMatchers(WHITE_LIST).permitAll()
                 .anyRequest()
                 .authenticated()

@@ -11,7 +11,6 @@ import uz.g4.ecommerce.controller.bot.BotController;
 @Component
 @RequiredArgsConstructor
 public class BotInitializer {
-    private final TelegramBot telegramBot;
 //    @Bean
 //    public void init() {
 //        try {

@@ -46,5 +46,12 @@ public class UserRequest {
         this.username = username;
         this.password = password;
     }
-    
+
+    public UserRequest(String name, String username, String password, Set<Role> roles, Set<Permission> permissions) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.permissions = permissions;
+    }
 }

@@ -1,6 +1,8 @@
 package uz.g4.ecommerce.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +31,8 @@ public class EmployeeController {
     }
     @GetMapping
     public String getList(Model model) {
-        model.addAttribute("response", userService.findAll());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("response", userService.findAll(authentication.getName()));
         return "employees";
     }
 
@@ -61,5 +64,5 @@ public class EmployeeController {
 //         userService.delete(id);
 //         return "employees";
 //     }
-
+    }
 }

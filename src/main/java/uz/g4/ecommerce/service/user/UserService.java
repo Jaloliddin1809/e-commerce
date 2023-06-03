@@ -107,8 +107,8 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         return userRepository.findById(id);
     }
 
-    public BaseResponse<List<UserResponse>> findAll() {
-        List<UserEntity> userEntities = userRepository.findAll();
+    public BaseResponse<List<UserResponse>> findAll(String username) {
+        List<UserEntity> userEntities = userRepository.findAllExceptUser(username);
         return BaseResponse.<List<UserResponse>>builder()
                 .status(200)
                 .message("success")

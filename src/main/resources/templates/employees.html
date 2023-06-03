@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,7 +53,7 @@
     <li><a href="/dashboard/categories">Categories</a></li>
     <li><a href="/dashboard/products">Products</a></li>
     <li><a href="/dashboard/orders">Orders</a></li>
-    <li><a href="/dashboard/employees">Employees</a></li>
+    <li><a sec:authorize="hasRole('SUPER_ADMIN')" href="/dashboard/employees">Employees</a></li>
   </ul>
 </div>
 <div class="container">
@@ -138,23 +138,22 @@
             <th>Name <i class="fa fa-sort"></i></th>
             <th>Username</th>
             <th>User roles <i class="fa fa-sort"></i></th>
-<!--            <th>User permissions</th>-->
+            <th>User permissions</th>
             <th>User enabled</th>
-            <th>Last modified by</th>
             <th>Create date</th>
             <th>Actions</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="employee, userNumber : ${response.data}">
+            th
             <td th:text="${userNumber.count}"></td>
             <td th:text="${employee.name}"></td>
             <td th:text="${employee.username}"></td>
             <td th:text="${employee.getRoles()}"></td>
-<!--            <td th:text="${employee.permissions}"></td>-->
-            <td th:text="${#temporals.format(employee.updatedDate, 'dd MMM yyyy HH:mm:ss')}"></td>
+            <td th:text="${employee.permissions}"></td>
+            <td th:text="${employee.enabled}"></td>
             <td th:text="${#temporals.format(employee.createdDate, 'dd MMM yyyy HH:mm:ss')}"></td>
-            <td th:text="${employee.lastModifiedBy}"></td>
             <td>
 
               <a href="#" class="view" title="View" data-toggle="modal" data-target="#viewModal">

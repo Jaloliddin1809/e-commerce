@@ -17,6 +17,7 @@ import uz.g4.ecommerce.repository.user.UserRepository;
 import uz.g4.ecommerce.service.BaseService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -52,13 +53,32 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
 
     @Override
     public BaseResponse<OrderResponse> update(OrderRequest orderRequest, UUID id) {
-        return null;
+        Optional<OrderEntity> order = orderRepository.findById(id);
+        if (order.isPresent()){
+            OrderEntity map = mapper.map(orderRequest, OrderEntity.class);
+            if (Objects.equals(map.getOrderState(),"DELIVERED")){
+                orderRepository.deleteById(map.getId());
+                return BaseResponse.<OrderResponse>builder()
+                        .message("Order deleted")
+                        .status(205)
+                        .build();
+            }
+            OrderEntity save = orderRepository.save(map);
+            return BaseResponse.<OrderResponse>builder()
+                    .message("Success")
+                    .status(200)
+                    .data(mapper.map(save,OrderResponse.class))
+                    .build();
+        }
+        return BaseResponse.<OrderResponse>builder()
+                .status(500)
+                .message("Order not found")
+                .build();
     }
 
     @Override
     public Boolean delete(UUID id) {
         Optional<OrderEntity> byId = orderRepository.findById(id);
-
         if (byId.isPresent()) {
             orderRepository.deleteById(id);
             return true;

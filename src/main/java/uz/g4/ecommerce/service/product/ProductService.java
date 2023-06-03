@@ -39,9 +39,9 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
     @Override
     public BaseResponse<ProductResponse> create(ProductRequest productRequest) {
         ProductEntity product = modelMapper.map(productRequest, ProductEntity.class);
-        if(productRepository.existsByName(product.getName())){
+        if (productRepository.existsByName(product.getName())) {
             return BaseResponse.<ProductResponse>builder()
-                    .message("Already exists name "+product.getName())
+                    .message("Already exists name " + product.getName())
                     .status(404)
                     .build();
         }
@@ -57,7 +57,6 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                     .status(400)
                     .build();
         }
-        ProductEntity product = modelMapper.map(productRequest, ProductEntity.class);
 
         product.setCategory(modelMapper.map(byId.getData(), CategoryEntity.class));
         productRepository.save(product);
@@ -92,7 +91,7 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                     .message("Successfully updated")
                     .data(modelMapper.map(product, ProductResponse.class))
                     .build();
-        } 
+        }
         return BaseResponse.<ProductResponse>builder()
                 .message("Product not found")
                 .status(400)
@@ -102,7 +101,7 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
 
     @Override
     public Boolean delete(UUID id) {
-            Optional<ProductEntity> product = productRepository.findById(id);
+        Optional<ProductEntity> product = productRepository.findById(id);
         if (product.isPresent()) {
             productRepository.delete(product.get());
             return true;
@@ -125,23 +124,26 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                 .status(400)
                 .build();
     }
-  
+
     public BaseResponse<List<ProductResponse>> getListProductsByCategoryId(UUID categoryId) {
         return BaseResponse.<List<ProductResponse>>builder()
                 .data(modelMapper
                         .map(productRepository.getProductEntitiesByCategory_Id(categoryId),
-                                new TypeToken<List<ProductResponse>>(){}.getType()))
+                                new TypeToken<List<ProductResponse>>() {
+                                }.getType()))
                 .message("success")
                 .status(200)
                 .build();
     }
+
     public BaseResponse<List<ProductResponse>> findAll() {
         List<ProductEntity> list = productRepository.findAll();
         return BaseResponse.<List<ProductResponse>>builder()
                 .status(200)
                 .message("success")
                 .data(modelMapper.map(list,
-                        new TypeToken<List<ProductResponse>>(){}.getType()))
+                        new TypeToken<List<ProductResponse>>() {
+                        }.getType()))
                 .build();
 
 //     public List<ProductResponse> getListByCategoryId(UUID categoryId) {
@@ -162,8 +164,8 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                     .collect(Collectors.toList());
         }
         return size.map(integer -> productRepository.findAll(PageRequest.of(0, integer))
-                .getContent().stream().map(product->modelMapper.map(product,ProductResponse.class)))
-                .orElseGet(() -> productRepository.findAll().stream().map(product->modelMapper.map(product,ProductResponse.class))).collect(Collectors.toList());
+                        .getContent().stream().map(product -> modelMapper.map(product, ProductResponse.class)))
+                .orElseGet(() -> productRepository.findAll().stream().map(product -> modelMapper.map(product, ProductResponse.class))).collect(Collectors.toList());
     }
 
 
@@ -181,8 +183,10 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                 .map((product) -> modelMapper.map(product, ProductResponse.class))
                 .collect(Collectors.toList());
     }
+
     public Optional<ProductEntity> getOneProduct(UUID id) {
         return productRepository.findById(id);
+    }
 
     public BaseResponse<ProductResponse> getByName(String data) {
         Optional<ProductEntity> productEntityByName = productRepository.findProductEntityByName(data);
