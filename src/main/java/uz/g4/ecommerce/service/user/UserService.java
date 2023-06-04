@@ -8,15 +8,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.g4.ecommerce.domain.dto.response.*;
 import uz.g4.ecommerce.domain.dto.request.*;
-import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
-import uz.g4.ecommerce.domain.entity.user.UserState;
 import uz.g4.ecommerce.repository.user.UserRepository;
 import uz.g4.ecommerce.service.BaseService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +67,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                     .status(200)
                     .data(modelMapper.map(user, UserResponse.class))
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return BaseResponse.<UserResponse>builder()
                     .message("User not updating ")
                     .status(400)
@@ -102,7 +101,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .status(404)
                 .build();
     }
-  
+
     public Optional<UserEntity> getOneUser(UUID id) {
         return userRepository.findById(id);
     }
@@ -113,9 +112,11 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .status(200)
                 .message("success")
                 .data(modelMapper.map(userEntities,
-                        new TypeToken<List<UserResponse>>(){}.getType()))
+                        new TypeToken<List<UserResponse>>() {
+                        }.getType()))
                 .build();
     }
+
     public BaseResponse<List<UserResponse>> findAllEmployees() {
         List<Role> excludedRoles = Arrays.asList(Role.USER);
         List<UserEntity> userEntities = userRepository.findAllUsersExceptRoles(excludedRoles);
@@ -123,7 +124,8 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .status(200)
                 .message("success")
                 .data(modelMapper.map(userEntities,
-                        new TypeToken<List<UserResponse>>(){}.getType()))
+                        new TypeToken<List<UserResponse>>() {
+                        }.getType()))
                 .build();
     }
 
@@ -196,8 +198,9 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     }
 
     public void updateState(UserStateDto userStateDto) {
-      userRepository.updateUserState(userStateDto.getState(), userStateDto.getChatId());
+        userRepository.updateUserState(userStateDto.getState(), userStateDto.getChatId());
     }
+
 
     public BaseResponse<Double> getBalance(Long chatId) {
         Optional<UserEntity> entity = userRepository.findUserEntityByChatId(chatId);
@@ -215,11 +218,11 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
         if (text.matches("\\d+")) {
             Optional<UserEntity> userEntityByChatId = userRepository.findUserEntityByChatId(chatId);
             if (userEntityByChatId.isPresent()) {
-                  userRepository.updateUserBalance(Double.valueOf(text), chatId);
-                  return BaseResponse.<UserResponse>builder()
-                          .message("balance changed")
-                          .status(200)
-                          .build();
+                userRepository.updateUserBalance(Double.valueOf(text), chatId);
+                return BaseResponse.<UserResponse>builder()
+                        .message("balance changed")
+                        .status(200)
+                        .build();
             }
         }
         return BaseResponse.<UserResponse>builder()
@@ -242,6 +245,12 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
                 .message("fail")
                 .status(400)
                 .build();
+    }
+
+    public List<UserResponse> search(String name) {
+        return userRepository.search(name).stream()
+                .map(user -> modelMapper.map(user, UserResponse.class))
+                .collect(Collectors.toList());
     }
 
     public void updateBalance(UUID id, double minusAmount) {

@@ -28,7 +28,7 @@ public class CategoryController {
         return "categories";
     }
     @PostMapping("/add")
-    public String updateEmployee(@ModelAttribute CategoryRequest categoryRequest, Model model) {
+    public String addCategory(@ModelAttribute CategoryRequest categoryRequest, Model model) {
         BaseResponse<CategoryResponse> response = categoryService.create(categoryRequest);
         model.addAttribute("categories", response.getMessage());
         return "redirect:/dashboard/categories";
@@ -36,6 +36,11 @@ public class CategoryController {
     @PostMapping("/delete")
     public String deleteWorker(@RequestParam("id") UUID id) {
         categoryService.delete(id);
+        return "redirect:/dashboard/categories";
+    }
+    @PostMapping("/update")
+    public String updateCategory(@RequestParam("id") UUID id, @ModelAttribute CategoryRequest categoryRequest) {
+        categoryService.update(categoryRequest, id);
         return "redirect:/dashboard/categories";
     }
 }

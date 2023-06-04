@@ -11,10 +11,6 @@ import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.service.user.UserService;
-import org.springframework.web.servlet.ModelAndView;
-import uz.g4.ecommerce.domain.entity.user.UserEntity;
-import uz.g4.ecommerce.service.user.UserService;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,6 +23,7 @@ public class EmployeeController {
     public String updateEmployee(@ModelAttribute UserRequest userRequest, Model model) {
         BaseResponse<UserResponse> response = userService.create(userRequest);
         model.addAttribute("response", response.getMessage());
+        System.out.println(response.getMessage());
         return "redirect:/dashboard/employees";
     }
     @GetMapping

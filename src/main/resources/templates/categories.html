@@ -63,8 +63,8 @@
         <div class="row">
           <div class="col-sm-8"><h2>Category <b>Details</b></h2></div>
           <div class="col-sm-4">
-            <div class="search-box">
-              <i class="material-icons">&#xE8B6;</i>
+            <div style="display: flex" class="search-box">
+              <i style="margin-left: 0px; margin-top: 0px; position: absolute;" class="material-icons">&#xE8B6;</i>
               <input type="text" class="form-control" placeholder="Search&hellip;">
             </div>
           </div>
@@ -168,7 +168,7 @@
                       <form th:action="@{/dashboard/categories/update}" method="post">
                         <div class="form-group">
                           <label for="editName">Name:</label>
-                          <input type="text" class="form-control" name="name" id="editName">
+                          <input type="text" class="form-control" name="type" id="editName">
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

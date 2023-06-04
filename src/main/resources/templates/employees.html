@@ -63,8 +63,8 @@
         <div class="row">
           <div class="col-sm-8"><h2>Employee <b>Details</b></h2></div>
           <div class="col-sm-4">
-            <div class="search-box">
-              <i class="material-icons">&#xE8B6;</i>
+              <div style="display: flex" class="search-box">
+                  <i style="margin-left: 0px; margin-top: 0px; position: absolute;" class="material-icons">&#xE8B6;</i>
               <input type="text" class="form-control" placeholder="Search&hellip;">
             </div>
           </div>
@@ -130,7 +130,6 @@
 
       </div>
       <div th:if="${response}">
-        <p style="color: darkred" th:text="${response.message}"></p>
         <table class="table table-striped table-hover table-bordered">
           <thead>
           <tr>
@@ -146,7 +145,6 @@
           </thead>
           <tbody>
           <tr th:each="employee, userNumber : ${response.data}">
-            th
             <td th:text="${userNumber.count}"></td>
             <td th:text="${employee.name}"></td>
             <td th:text="${employee.username}"></td>

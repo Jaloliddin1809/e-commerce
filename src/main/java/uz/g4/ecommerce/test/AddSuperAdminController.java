@@ -3,7 +3,6 @@ package uz.g4.ecommerce.test;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import uz.g4.ecommerce.domain.dto.request.UserRequest;
-import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.entity.user.Permission;
 import uz.g4.ecommerce.domain.entity.user.Role;
@@ -11,6 +10,7 @@ import uz.g4.ecommerce.service.category.CategoryService;
 import uz.g4.ecommerce.service.product.ProductService;
 import uz.g4.ecommerce.service.user.UserService;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -22,15 +22,17 @@ public class AddSuperAdminController {
     private final ProductService productService;
 
     @GetMapping("/super-admin")
-    public BaseResponse<UserResponse> addSuperAdmin() {
+    public void addSuperAdmin() {
         Set<Permission> perm = Set.of(Permission.ADD, Permission.EDIT, Permission.GET, Permission.DELETE);
-        return userService.create(
-                new UserRequest("Khamroz", "admin", "1", Set.of(Role.ADMIN, Role.SUPER_ADMIN), perm));
-// <<<<<<< bot
-//                 new UserRequest("Name", "ADMIN", "123", Set.of(Role.SUPER_ADMIN), perm, null, null, null));
-// =======
-//                 new UserRequest("Jaloliddin", "Accountant", "123", Set.of(Role.ACCOUNTANT), perm));
-// >>>>>>> main
+        for(int i=0;i<300;i++) {
+            userService.create(
+                    new UserRequest(i+"name"+i, "username"+i, "1", Set.of(Role.ADMIN, Role.SUPER_ADMIN), perm));
+        }
+    }
+
+    @GetMapping("/search")
+    public List<UserResponse> search(){
+        return userService.search("name");
     }
 //
 //    @GetMapping("/add_category")

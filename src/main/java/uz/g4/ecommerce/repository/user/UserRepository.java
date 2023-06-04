@@ -19,6 +19,8 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     Optional<UserEntity> findByUsername(String username);
     UserEntity findUserEntitiesById(UUID id);
     boolean existsByUsername(String username);
+    @Query("select u from users u where u.name like %:name%")
+    List<UserEntity> search(@Param("name") String name);
   
     @Query("SELECT u FROM users u WHERE u.roles NOT IN (:excludedRoles)")
     List<UserEntity> findAllUsersExceptRoles(@Param("excludedRoles") List<Role> excludedRoles);
@@ -40,6 +42,6 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
     @Transactional
     @Query("update users u set u.balance = u.balance - :minus where u.id = :id")
     void cutUserBalance(@Param("id") UUID id, @Param("minus") double minusAmount);
-    @Query("select u from users u where u.username<>:username")
+    @Query(value = "select u from users u where u.username<>:username")
     List<UserEntity> findAllExceptUser(@Param("username") String username);
 }

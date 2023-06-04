@@ -23,13 +23,13 @@ public class BotInitializer {
 //    }
     private final BotController controller;
 
-    @Bean
-    public void run() {
-        try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(controller);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @Bean
+//    public void run() {
+//        try {
+//            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+//            botsApi.registerBot(controller);
+//        } catch (TelegramApiException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

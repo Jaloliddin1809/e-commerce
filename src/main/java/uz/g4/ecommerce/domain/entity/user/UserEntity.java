@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private Double balance = 10000D;
     @OneToMany(mappedBy = "user")
     private List<OrderEntity> orders;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<HistoryEntity> histories;
     private Boolean enabled = true;
 
