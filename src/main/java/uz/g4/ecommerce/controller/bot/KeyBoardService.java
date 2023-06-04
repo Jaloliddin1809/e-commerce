@@ -60,24 +60,20 @@ public class KeyBoardService {
     public ReplyKeyboard getCategories() {
         InlineKeyboardMarkup inline = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows = new ArrayList<>();
-        List<InlineKeyboardButton> buttons = new ArrayList<>();
-        InlineKeyboardButton button = new InlineKeyboardButton();
 
         List<CategoryResponse> parentCategories = categoryService.getParentCategories();
 
-        for (int i = 0; i < parentCategories.size(); i++) {
-            for (int j = 0; j < parentCategories.size(); j++) {
-                button.setText(parentCategories.get(i).getType());
-                button.setCallbackData(parentCategories.get(i).getId().toString());
-                buttons.add(button);
-            }
-            rows.add(buttons);
-            button = new InlineKeyboardButton();
-            buttons = new ArrayList<>();
+        for (CategoryResponse parentCategory : parentCategories) {
+            rows.add(createCategoryButton(parentCategory));
         }
 
         inline.setKeyboard(rows);
         return inline;
+    }
+    private List<InlineKeyboardButton> createCategoryButton(CategoryResponse response) {
+        InlineKeyboardButton button = new InlineKeyboardButton(response.getType());
+        button.setCallbackData(response.getId().toString());
+        return List.of(button);
     }
 
     public ReplyKeyboard getOrders(Long chatId) {
@@ -92,18 +88,11 @@ public class KeyBoardService {
             return null;
         }
 
-        for (int i = 0; i < orders.size(); i++) {
-            for (int j = 0; j < orders.size(); j++) {
-                button.setText(orders.get(i).getProduct().getName());
-                button.setCallbackData(orders.get(i).getId().toString());
-                buttons.add(button);
-            }
-            rows.add(buttons);
-            button = new InlineKeyboardButton();
-            buttons = new ArrayList<>();
+        for (OrderResponse order : orders) {
+            rows.add(getOrdersButton(order));
         }
 
-        button = new InlineKeyboardButton("Order all");
+        button.setText("Order all");
         button.setCallbackData("ORDER_ALL");
         buttons.add(button);
         button = new InlineKeyboardButton("Remove all");
@@ -113,6 +102,12 @@ public class KeyBoardService {
         rows.add(buttons);
         inline.setKeyboard(rows);
         return inline;
+    }
+
+    private List<InlineKeyboardButton> getOrdersButton(OrderResponse order) {
+        InlineKeyboardButton button = new InlineKeyboardButton(order.getProduct().getName());
+        button.setCallbackData(order.getId().toString());
+        return List.of(button);
     }
 
 

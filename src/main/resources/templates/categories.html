@@ -107,6 +107,30 @@
       </div>
       <div>
         <table class="table table-striped table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name <i class="fa fa-sort"></i></th>
+                <th>Parent</th>
+                <
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="categorie,itemStat : ${categories}">
+                <td th:text="${itemStat.count}"></td>
+                <td th:text="${categorie.type}"></td>
+                <td th:text="${categorie.parentId}"></td>
+                <td>
+                    <a href="#" class="view" title="View" data-toggle="tooltip"><i
+                            class="material-icons">&#xE417;</i></a>
+                    <a href="#" class="edit" title="Edit" data-toggle="tooltip"><i
+                            class="material-icons">&#xE254;</i></a>
+                    <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i
+                            class="material-icons">&#xE872;</i></a>
+                </td>
+            </tr>
+            </tbody>
           <thead>
           <tr>
             <th>#</th>

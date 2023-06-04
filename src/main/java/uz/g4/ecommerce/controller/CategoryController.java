@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import uz.g4.ecommerce.domain.dto.request.CategoryRequest;
-import uz.g4.ecommerce.domain.dto.request.UserRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
@@ -15,7 +14,7 @@ import uz.g4.ecommerce.service.category.CategoryService;
 import java.util.List;
 import java.util.UUID;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/dashboard/categories")
 public class CategoryController {

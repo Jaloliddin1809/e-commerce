@@ -104,7 +104,7 @@ public class BotService {
     public SendMessage getCategories(Long chatId) {
         userService.updateState(new UserStateDto(chatId, UserState.CATEGORIES));
         ReplyKeyboard replyKeyboard = keyBoardService.getCategories();
-        SendMessage sendMessage = new SendMessage(chatId.toString(), "Choose one category");
+        SendMessage sendMessage = new SendMessage(chatId.toString(), "Select parent category");
         sendMessage.setReplyMarkup(replyKeyboard);
         return sendMessage;
     }
@@ -171,40 +171,26 @@ public class BotService {
         if (products == null) {
             userService.updateState(new UserStateDto(chatId, UserState.CATEGORIES));
 
-            for (int i = 0; i < childCategories.size(); i++) {
-                for (int j = 0; j < childCategories.size(); j++) {
-                    button.setText(childCategories.get(i).getType());
-                    button.setCallbackData(childCategories.get(i).getId().toString());
-                    buttons.add(button);
-                }
-                rows.add(buttons);
-                button = new InlineKeyboardButton();
-                buttons = new ArrayList<>();
+            for (CategoryResponse childCategory : childCategories) {
+                rows.add(getChildCategoriesButton(childCategory));
             }
 
-            button = new InlineKeyboardButton("🔙 Back");
+            button.setText("🔙 Back");
             button.setCallbackData("BACK");
             buttons.add(button);
 
             rows.add(buttons);
             inline.setKeyboard(rows);
 
-            sendMessage.setText("Select one category");
+            sendMessage.setText("Select child category");
 
         } else {
             userService.updateState(new UserStateDto(chatId, UserState.PRODUCT_LIST));
 
-            for (int i = 0; i < products.size(); i++) {
-                for (int j = 0; j < products.size(); j++) {
-                    button.setText(products.get(i).getName());
-                    button.setCallbackData(products.get(i).getId().toString());
-                    buttons.add(button);
-                }
-                rows.add(buttons);
-                button = new InlineKeyboardButton();
-                buttons = new ArrayList<>();
+            for (ProductResponse product : products) {
+                rows.add(getProductsButton(product));
             }
-            button = new InlineKeyboardButton("🔙 Back");
+            button.setText("🔙 Back");
             button.setCallbackData(products.get(0).getName());
             buttons.add(button);
 
@@ -217,6 +203,18 @@ public class BotService {
         sendMessage.setReplyMarkup(inline);
         return sendMessage;
 
+    }
+
+    private List<InlineKeyboardButton> getProductsButton(ProductResponse product) {
+        InlineKeyboardButton button = new InlineKeyboardButton(product.getName());
+        button.setCallbackData(product.getId().toString());
+        return List.of(button);
+    }
+
+    private List<InlineKeyboardButton> getChildCategoriesButton(CategoryResponse childCategory) {
+        InlineKeyboardButton button = new InlineKeyboardButton(childCategory.getType());
+        button.setCallbackData(childCategory.getId().toString());
+        return List.of(button);
     }
 
     public ProductResponse getProduct(String data) {

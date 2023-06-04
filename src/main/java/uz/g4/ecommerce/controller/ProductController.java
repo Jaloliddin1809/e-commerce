@@ -100,7 +100,16 @@ public class ProductController {
         }
         return null;
     }
-
+    @GetMapping("/all")
+    public ModelAndView findByPage(
+            ModelAndView view,
+            @RequestParam Integer page
+    ) {
+        view.addObject("products", productService.findByPage(Optional.of(page), Optional.of(10)));
+        return view;
+    }
+}
+=======
 //     @PostMapping("/add")
 //     public ModelAndView addProduct(
 //             @Valid @ModelAttribute ProductRequest productRequest,

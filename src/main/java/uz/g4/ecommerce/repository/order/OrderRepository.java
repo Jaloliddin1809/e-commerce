@@ -18,18 +18,14 @@ import org.springframework.stereotype.Repository;
 import uz.g4.ecommerce.domain.entity.order.OrderEntity;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import uz.g4.ecommerce.domain.entity.order.OrderEntity;
-
 import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
     @Query(value = "select u from orders u where u.orderState <> 'IN_CART'")
     List<OrderEntity> findAllByStateNotInCart();
-
-    @Query("select o from orders o where o.user.chatId = :chatId")
+  
+    @Query("select o from orders o where o.user.chatId = :chatId and o.orderState = 'IN_CART'")
     List<OrderEntity> findByChatId(@Param("chatId") Long chatId);
 
     Optional<OrderEntity> findOrderEntityByUser_IdAndProduct_Id (UUID userId, UUID productId);
@@ -48,4 +44,12 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
     @Transactional
     @Query("update orders o set o.amount = o.amount - 1 where o.id = :id")
     void minusOrderAmount(@Param("id") UUID uuid);
+
+    @Query("select o from orders o where o.orderState <> 'IN_CART'")
+    List<OrderEntity> findAllByState();
+
+    @Modifying
+    @Transactional
+    @Query("update orders o set o.orderState = 'ORDERED' where o.id = :id")
+    void updateOrderState(@Param("id") UUID id);
 }
