@@ -53,67 +53,13 @@ public class ProductController {
         }
         return null;
     }
+    @GetMapping("/all")
+    public ModelAndView findByPage(
+            ModelAndView view,
+            @RequestParam Integer page
+    ) {
 
-@RequestMapping("/dashboard")
-public class ProductController {
-    private final ProductService productService;
-//    @GetMapping("/products")
-//    public ModelAndView login(ModelAndView view) {
-//        view.setViewName("product");
-//        return view;
-//    }
-
-    @PostMapping("/add")
-    public ModelAndView addProduct(
-            @Valid @ModelAttribute ProductRequest productRequest,
-            BindingResult bindingResult){
-        ModelAndView view = new ModelAndView();
-        if (bindingResult.hasErrors()){
-            view.addObject("message", bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage));
-        }else {
-            BaseResponse response = productService.create(productRequest);
-            view.addObject("message", response.getMessage());
-        }
+        view.addObject("products", productService.findByPage(Optional.of(page), Optional.of(10)));
         return view;
-    }
-
-//    @PostMapping("/add")
-//    public BaseResponse<ProductResponse> addProduct(
-//            @RequestBody ProductRequest productRequest){
-//        return productService.create(productRequest);
-//    }
-    @PostMapping("/update/{id}")
-    public ModelAndView updateProduct(@PathVariable("id") UUID productId,
-                                      @RequestBody ProductRequest productRequest,
-                                      ModelAndView view, BindingResult result) {
-        String errors = errors(result);
-
-        if (errors != null) {
-            view.addObject("message", errors);
-            view.setViewName("update");
-            return view;
-        }
-        BaseResponse<ProductResponse> update = productService.update(productRequest, productId);
-        view.addObject("message", update.getMessage());
-        view.setViewName("update");
-        return view;
-    }
-
-    @GetMapping("/delete/{id}")
-    public ModelAndView deleteProduct(@PathVariable("id") UUID productId, ModelAndView view) {
-        if (productService.delete(productId)) {
-            view.addObject("message", "successfully deleted");
-            view.setViewName("delete");
-            return view;
-        }
-        view.addObject("message", "product not found");
-        view.setViewName("delete");
-        return view;
-    }
-
-    @GetMapping("/products")
-    public String findByPage(Model model) {
-        model.addAttribute("products", productService.findByPage(Optional.of(0), Optional.of(500)));
-        return "product";
     }
 }

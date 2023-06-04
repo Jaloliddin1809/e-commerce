@@ -81,7 +81,7 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
     }
 
     public List<OrderResponse> findAll() {
-        return orderRepository.findAll()
+        return orderRepository.findAllByState()
                 .stream()
                 .map((order) -> mapper.map(order, OrderResponse.class))
                 .collect(Collectors.toList());

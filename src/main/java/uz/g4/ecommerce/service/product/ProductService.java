@@ -255,7 +255,7 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                                     .user(orderEntity.getUser())
                                     .build()
                     );
-                    orderRepository.deleteById(orderEntity.getId());
+                    orderRepository.updateOrderState(orderEntity.getId());
                 }
                 return BaseResponse.<OrderResponse>builder()
                         .message("User balance not enough")
@@ -294,7 +294,7 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                                 .user(order.getUser())
                                 .build()
                 );
-                orderRepository.deleteById(order.getId());
+                orderRepository.updateOrderState(order.getId());
                 return BaseResponse.<OrderResponse>builder()
                         .message("successfully purchased")
                         .status(200)
