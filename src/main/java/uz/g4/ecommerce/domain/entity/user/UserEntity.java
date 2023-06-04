@@ -34,7 +34,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private Double balance = 10000D;
     @OneToMany(mappedBy = "user")
     private List<OrderEntity> orders;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
     private List<HistoryEntity> histories;
     private Boolean enabled = true;
 
@@ -71,5 +71,13 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    public UserEntity(String name, String username, String password, Set<Role> roles, Set<Permission> permissions) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.permissions = permissions;
     }
 }

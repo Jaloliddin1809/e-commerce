@@ -23,4 +23,5 @@ public class UserResponse {
     private Boolean enabled = true;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
+    private String lastModifiedBy;
 }
