@@ -31,6 +31,14 @@ public class CategoryService implements BaseService<BaseResponse<CategoryRespons
         CategoryEntity category = new CategoryEntity();
         category.setType(categoryRequest.getType());
 
+        if (repository.existsByType(category.getType())){
+            return BaseResponse.<CategoryResponse>builder()
+                    .message("Already exists name "+categoryRequest.getType())
+                    .status(500)
+                    .build();
+
+        }
+
         if (categoryRequest.getParentId() != null) {
             Optional<CategoryEntity> byId = repository.findById(categoryRequest.getParentId());
             if (byId.isPresent()) {

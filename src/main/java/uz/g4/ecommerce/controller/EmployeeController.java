@@ -1,6 +1,8 @@
 package uz.g4.ecommerce.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +11,6 @@ import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.service.user.UserService;
-import org.springframework.web.servlet.ModelAndView;
-import uz.g4.ecommerce.domain.entity.user.UserEntity;
-import uz.g4.ecommerce.service.user.UserService;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,11 +23,13 @@ public class EmployeeController {
     public String updateEmployee(@ModelAttribute UserRequest userRequest, Model model) {
         BaseResponse<UserResponse> response = userService.create(userRequest);
         model.addAttribute("response", response.getMessage());
+        System.out.println(response.getMessage());
         return "redirect:/dashboard/employees";
     }
     @GetMapping
     public String getList(Model model) {
-        model.addAttribute("response", userService.findAll());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("response", userService.findAll(authentication.getName()));
         return "employees";
     }
 
@@ -61,5 +61,5 @@ public class EmployeeController {
 //         userService.delete(id);
 //         return "employees";
 //     }
-
+    }
 }

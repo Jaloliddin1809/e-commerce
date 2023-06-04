@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {

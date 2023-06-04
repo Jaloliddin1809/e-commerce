@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,7 +54,7 @@
         <li><a href="/dashboard/categories">Categories</a></li>
         <li><a href="/dashboard/products">Products</a></li>
         <li><a href="/dashboard/orders">Orders</a></li>
-        <li><a href="/dashboard/employees">Employees</a></li>
+        <li><a sec:authorize="hasRole('SUPER_ADMIN')" href="/dashboard/employees">Employees</a></li>
     </ul>
 </div>
 <div class="container">
@@ -62,10 +62,10 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2>Employee <b>Details</b></h2></div>
+                    <div class="col-sm-8"><h2>Product <b>Details</b></h2></div>
                     <div class="col-sm-4">
-                        <div class="search-box">
-                            <i class="material-icons">&#xE8B6;</i>
+                        <div style="display: flex" class="search-box">
+                            <i style="margin-left: 0px; margin-top: 0px; position: absolute;" class="material-icons">&#xE8B6;</i>
                             <input type="text" class="form-control" placeholder="Search&hellip;">
                         </div>
                     </div>
@@ -88,23 +88,26 @@
                                 <form action="/dashboard/products/add" method="post">
                                     <div class="form-group">
                                         <label for="productName">Name:</label>
-                                        <input type="text" class="form-control" id="productName" name="name">
+                                        <input required type="text" class="form-control" id="productName" name="name">
                                     </div>
                                     <div class="form-group">
                                         <label for="productPrice">Price:</label>
-                                        <input type="number" class="form-control" id="productPrice" name="price">
+                                        <input required type="number" class="form-control" id="productPrice" name="price">
                                     </div>
                                     <div class="form-group">
                                         <label for="productAmount">Amount:</label>
-                                        <input type="number" class="form-control" id="productAmount" name="amount">
+                                        <input required type="number" class="form-control" id="productAmount" name="amount">
                                     </div>
-<!--                                    <div class="form-group">-->
-<!--                                        <label for="roles">Roles:</label>-->
-<!--                                        <select class="form-control" id="roles" name="roles" multiple>-->
-<!--                                            <option value="ADMIN">Admin</option>-->
-<!--                                            <option value="ACCOUNTANT">Accountant</option>-->
-<!--                                        </select>-->
-<!--                                    </div>-->
+                                    <div class="form-group">
+                                        <label for="categories">Categories:</label>
+                                        <label>
+                                            <select name="category">
+                                                <option id="categories"  name="category" th:each="category : ${categories}" th:value="${category.id}" th:text="${category.type}" ></option>
+<!--                                                <option th:each="category : ${categories}" th:value="${category.id}"-->
+<!--                                                        th:text="${category.type}" th:selected="${category.id == selectedCategoryId}"></option>-->
+                                            </select>
+                                        </label>
+                                    </div>
 
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

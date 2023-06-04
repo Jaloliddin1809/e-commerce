@@ -38,15 +38,15 @@ public class ProductController {
         return productService.getOneProduct(productId);
     }
 
-//     @PostMapping("/add")
-//     public String updateEmployee(@ModelAttribute ProductRequest productRequest) {
-//         productService.create(productRequest);
-
-//         return "redirect:/dashboard/products";
-//     }
+     @PostMapping("/add")
+     public String updateEmployee(@ModelAttribute ProductRequest productRequest) {
+         productService.create(productRequest);
+         return "redirect:/dashboard/products";
+     }
     @GetMapping
     public String getList(Model model) {
         model.addAttribute("response", productService.findAll());
+        model.addAttribute("categories",categoryService.findAllChildCategories().getData());
         return "product";
     }
 
@@ -69,24 +69,24 @@ public class ProductController {
     return "product";
     }
 
-    @PostMapping("/add")
-    public ModelAndView addProduct(
-            @RequestBody ProductRequest productRequest, BindingResult result
-            , ModelAndView model) {
+//    @PostMapping("/add")
+//    public ModelAndView addProduct(
+//            @RequestBody ProductRequest productRequest, BindingResult result
+//            , ModelAndView model) {
+//
+//        String errors = errors(result);
+//
+//        if (errors != null) {
+//            model.addObject("message", errors);
+//            model.setViewName("product");
+//            return model;
+//        }
 
-        String errors = errors(result);
-
-        if (errors != null) {
-            model.addObject("message", errors);
-            model.setViewName("product");
-            return model;
-        }
-
-        BaseResponse<ProductResponse> response = productService.create(productRequest);
-        model.addObject("message", response.getMessage());
-        model.setViewName("product");
-        return model;
-    }
+//        BaseResponse<ProductResponse> response = productService.create(productRequest);
+//        model.addObject("message", response.getMessage());
+//        model.setViewName("product");
+//        return model;
+//    }
 
     public String errors(BindingResult result) {
         if (result.hasErrors()) {
