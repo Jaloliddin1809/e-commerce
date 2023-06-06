@@ -13,6 +13,7 @@ import uz.g4.ecommerce.domain.dto.response.OrderResponse;
 import uz.g4.ecommerce.domain.entity.user.UserState;
 import uz.g4.ecommerce.service.category.CategoryService;
 import uz.g4.ecommerce.service.order.OrderService;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -115,35 +116,35 @@ public class KeyBoardService {
         List<List<InlineKeyboardButton>> buttons = new LinkedList<>();
         List<InlineKeyboardButton> rows = new LinkedList<>();
         InlineKeyboardButton button = new InlineKeyboardButton("1️⃣");
-        button.setCallbackData("1"+productId);
+        button.setCallbackData("1" + productId);
         rows.add(button);
         button = new InlineKeyboardButton("2️⃣");
-        button.setCallbackData("2"+productId);
+        button.setCallbackData("2" + productId);
         rows.add(button);
         button = new InlineKeyboardButton("3️⃣");
-        button.setCallbackData("3"+productId);
+        button.setCallbackData("3" + productId);
         rows.add(button);
         buttons.add(rows);
         rows = new LinkedList<>();
         button = new InlineKeyboardButton("4️⃣");
-        button.setCallbackData("4"+productId);
+        button.setCallbackData("4" + productId);
         rows.add(button);
         button = new InlineKeyboardButton("5️⃣");
-        button.setCallbackData("5"+productId);
+        button.setCallbackData("5" + productId);
         rows.add(button);
         button = new InlineKeyboardButton("6️⃣");
-        button.setCallbackData("6"+productId);
+        button.setCallbackData("6" + productId);
         rows.add(button);
         buttons.add(rows);
         rows = new LinkedList<>();
         button = new InlineKeyboardButton("7️⃣");
-        button.setCallbackData("7"+productId);
+        button.setCallbackData("7" + productId);
         rows.add(button);
         button = new InlineKeyboardButton("8️⃣");
-        button.setCallbackData("8"+productId);
+        button.setCallbackData("8" + productId);
         rows.add(button);
         button = new InlineKeyboardButton("9️⃣");
-        button.setCallbackData("9"+productId);
+        button.setCallbackData("9" + productId);
         rows.add(button);
         buttons.add(rows);
         rows = new LinkedList<>();
@@ -181,20 +182,20 @@ public class KeyBoardService {
 
 
         button.setText("➖");
-        button.setCallbackData("-"+data);
+        button.setCallbackData("-" + data);
         row.add(button);
         button = new InlineKeyboardButton("Buy");
         button.setCallbackData(data);
         row.add(button);
         button = new InlineKeyboardButton();
         button.setText("➕");
-        button.setCallbackData("+"+data);
+        button.setCallbackData("+" + data);
         row.add(button);
         rows.add(row);
 
         row = new ArrayList<>();
         button = new InlineKeyboardButton("Remove");
-        button.setCallbackData("REMOVE"+data);
+        button.setCallbackData("REMOVE" + data);
         row.add(button);
         rows.add(row);
 

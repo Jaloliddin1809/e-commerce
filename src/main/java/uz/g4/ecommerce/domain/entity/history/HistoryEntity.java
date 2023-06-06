@@ -18,7 +18,7 @@ public class HistoryEntity extends BaseEntity {
     private Double price;
     private Integer amount;
     private Double totalPrice;
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 }

@@ -1,55 +1,25 @@
-let left = document.querySelector(".left")
-let right = document.querySelector(".right")
-let render = document.querySelector('.render')
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+const openModalBtn = document.querySelector(".btn-open");
+const closeModalBtn = document.querySelector(".btn-close");
 
-function checkScreenChanges() {
-    const WindowWidth = parseInt(window.innerWidth) - 287
-    right.style.width = `${WindowWidth}px`
-    window.requestAnimationFrame(checkScreenChanges);
-}
+const openModal = function () {
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+};
 
-window.requestAnimationFrame(checkScreenChanges);
+openModalBtn.addEventListener("click", openModal);
 
-function checkScreenChanges2() {
-    const WindowWidth = parseInt(window.innerHeight) - 89
-    render.style.height = `${WindowWidth}px`
-    window.requestAnimationFrame(checkScreenChanges2);
-}
+const closeModal = function () {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+};
 
-window.requestAnimationFrame(checkScreenChanges2);
-
-
-
-
-let category = document.querySelector('#category');
-let product = document.querySelector('#product');
-let orders = document.querySelector('#orders');
-let employes = document.querySelector('#employes');
-
-function openCategorys() {
-    category.style.display = "block"
-    product.style.display = "none"
-    orders.style.display = "none"
-    employes.style.display = "none"
-}
-
-function openProducts() {
-    category.style.display = "none"
-    product.style.display = "block"
-    orders.style.display = "none"
-    employes.style.display = "none"
-}
-
-function openOrders() {
-    category.style.display = "none"
-    product.style.display = "none"
-    orders.style.display = "block"
-    employes.style.display = "none"
-}
-
-function openEmployes() {
-    category.style.display = "none"
-    product.style.display = "none"
-    orders.style.display = "none"
-    employes.style.display = "block"
-}
+closeModalBtn.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeModal);
+document.addEventListener("keydown");
+document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        modalClose();
+    }
+});

@@ -1,5 +1,7 @@
 package uz.g4.ecommerce.domain.dto.request;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +15,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductRequest {
-    @Pattern(regexp = "^[A-Za-z]", message = "name is not valid")
+   @NotEmpty
+   @NotNull
+   @Pattern(regexp = "^[A-Za-z]+$", message = "name is not valid")
     private String name;
     private Double price;
     private Integer amount;

@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,8 +23,12 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     protected UUID id;
     @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     protected LocalDateTime createdDate;
     @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     protected LocalDateTime updatedDate;
     @CreatedBy
     protected String createdBy;
