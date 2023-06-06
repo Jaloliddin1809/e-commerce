@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
+import uz.g4.ecommerce.domain.entity.user.UserEntity;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,4 +29,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity, UUID> {
   
     List<ProductEntity> getProductEntitiesByCategory_Id(UUID categoryId);
     Boolean existsByName(String name);
+
+    @Query(value = "SELECT p FROM products p WHERE LOWER(p.name) LIKE CONCAT('%', LOWER(:keyword), '%')")
+    List<ProductEntity> findByKeyword(@Param("keyword") String keyword);
+
 }

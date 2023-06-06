@@ -11,6 +11,8 @@ import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.service.user.UserService;
+
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,17 +21,22 @@ import java.util.UUID;
 @RequestMapping("/dashboard/employees")
 public class EmployeeController {
     private final UserService userService;
+
     @PostMapping("/add")
     public String updateEmployee(@ModelAttribute UserRequest userRequest, Model model) {
         BaseResponse<UserResponse> response = userService.create(userRequest);
         model.addAttribute("response", response.getMessage());
-        System.out.println(response.getMessage());
         return "redirect:/dashboard/employees";
     }
+
     @GetMapping
-    public String getList(Model model) {
+    public String getList(Model model, String keyword) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("response", userService.findAll(authentication.getName()));
+        if (Objects.nonNull(keyword)) {
+            model.addAttribute("response", userService.findByKeyword(keyword, authentication.getName()));
+        } else {
+            model.addAttribute("response", userService.findAll(authentication.getName()));
+        }
         return "employees";
     }
 
@@ -38,28 +45,16 @@ public class EmployeeController {
         userService.delete(id);
         return "redirect:/dashboard/employees";
     }
+
     @GetMapping("/get-one")
     @ResponseBody
     public Optional<UserEntity> showEditModal(@RequestParam("id") UUID id) {
         return userService.getOneUser(id);
     }
+
     @PostMapping("/update")
     public String updateUser(@RequestParam("id") UUID id, @ModelAttribute UserRequest userRequest) {
         userService.update(userRequest, id);
         return "redirect:/dashboard/employees";
-
-
-//     @GetMapping("/employees")
-//     public String findByPage(Model model) {
-//         model.addAttribute("users", userService.findByPage(Optional.of(0), Optional.of(500)));
-//         return "employees";
-//     }
-//     @GetMapping("/employees/delete/{id}")
-//     public String delete(
-//             @PathVariable(value = "id")UUID id
-//     ){
-//         userService.delete(id);
-//         return "employees";
-//     }
     }
 }

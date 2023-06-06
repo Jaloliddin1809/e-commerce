@@ -1,6 +1,7 @@
 package uz.g4.ecommerce.service.product;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
@@ -72,25 +73,33 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
     public BaseResponse<ProductResponse> update(ProductRequest productRequest, UUID id) {
         Optional<ProductEntity> product = productRepository.findById(id);
 
-
         if (product.isPresent()) {
-            if (productRequest.getName() != null) {
-                product.get().setName(productRequest.getName());
+            try {
+                if (StringUtils.isNotBlank(productRequest.getName())) {
+                    product.get().setName(productRequest.getName());
+                }
+                if (Objects.nonNull(productRequest.getPrice())) {
+                    product.get().setPrice(productRequest.getPrice());
+                }
+                if (Objects.nonNull(productRequest.getAmount())) {
+                    product.get().setAmount(productRequest.getAmount());
+                }
+                if (Objects.nonNull(productRequest.getCategory())) {
+                    BaseResponse<CategoryResponse> category = categoryService.getById(productRequest.getCategory());
+                    product.get().setCategory(modelMapper.map(category.getData(), CategoryEntity.class));
+                }
+                productRepository.save(product.get());
+                return BaseResponse.<ProductResponse>builder()
+                        .message("Product updated ")
+                        .status(200)
+                        .data(modelMapper.map(product.get(), ProductResponse.class))
+                        .build();
+            } catch (Exception e) {
+                return BaseResponse.<ProductResponse>builder()
+                        .message("Product not updating ")
+                        .status(400)
+                        .build();
             }
-            if (productRequest.getPrice() != null) {
-                product.get().setPrice(productRequest.getPrice());
-            }
-            if (productRequest.getAmount() != null) {
-                product.get().setAmount(productRequest.getAmount());
-            }
-            BaseResponse<CategoryResponse> category = categoryService.getById(productRequest.getCategory());
-            product.get().setCategory(modelMapper.map(category.getData(), CategoryEntity.class));
-            productRepository.save(product.get());
-            return BaseResponse.<ProductResponse>builder()
-                    .status(200)
-                    .message("Successfully updated")
-                    .data(modelMapper.map(product, ProductResponse.class))
-                    .build();
         }
         return BaseResponse.<ProductResponse>builder()
                 .message("Product not found")
@@ -343,6 +352,14 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                 .build();
     }
 
+    public BaseResponse<List<ProductResponse>> findByKeyword(String keyword) {
+        List<ProductEntity> product = productRepository.findByKeyword(keyword);
+        return BaseResponse.<List<ProductResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(modelMapper.map(product,
+                        new TypeToken<List<ProductResponse>>(){}.getType()))
+                .build();
     private void updateHistory(List<HistoryResponse> userHistories, String name, UUID id, int amount, double totalPrice) {
         for (HistoryResponse userHistory : userHistories) {
             if (userHistory.getUser().getId().equals(id) && userHistory.getProductName().equals(name)) {

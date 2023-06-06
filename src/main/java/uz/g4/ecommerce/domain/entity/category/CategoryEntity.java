@@ -16,11 +16,11 @@ import java.util.Set;
 public class CategoryEntity extends BaseEntity {
     @Column(unique = true)
     private String type;
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CategoryEntity> children;
     @ManyToOne
     @JoinColumn(name = "parent_id")
     private CategoryEntity parent;
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductEntity> products;
 }

@@ -17,4 +17,6 @@ public class CategoryResponse {
     private UUID id;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
+    private String lastModifiedBy;
+    private String createdBy;
 }
