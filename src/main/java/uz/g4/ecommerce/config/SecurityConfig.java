@@ -26,6 +26,7 @@ public class SecurityConfig {
             "/auth/**",
             "/js/**",
     };
+}
 
 
 

@@ -36,7 +36,11 @@ public class HistoryService implements BaseService<BaseResponse<HistoryResponse>
 
     @Override
     public BaseResponse<HistoryResponse> update(HistoryRequest historyRequest, UUID id) {
-        return null;
+        historyRepository.update(historyRequest.getAmount(), historyRequest.getTotalPrice(), id);
+        return BaseResponse.<HistoryResponse>builder()
+                .message("success")
+                .status(200)
+                .build();
     }
 
     @Override

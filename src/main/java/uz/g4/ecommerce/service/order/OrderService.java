@@ -7,6 +7,7 @@ import uz.g4.ecommerce.domain.dto.request.OrderRequest;
 import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.OrderResponse;
 import uz.g4.ecommerce.domain.entity.order.OrderEntity;
+import uz.g4.ecommerce.domain.entity.order.OrderStatus;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.repository.order.OrderRepository;
 import uz.g4.ecommerce.repository.order.OrderRepository;
@@ -15,7 +16,6 @@ import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.repository.order.OrderRepository;
 import uz.g4.ecommerce.repository.user.UserRepository;
 import uz.g4.ecommerce.service.BaseService;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,7 +30,7 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
     @Override
     public BaseResponse<OrderResponse> create(OrderRequest orderRequest) {
 
-        Optional<OrderEntity> savedOrder = orderRepository.findOrderEntityByUser_IdAndProduct_Id(
+        Optional<OrderEntity> savedOrder = orderRepository.findOrderEntityByUserIdAndProductId(
                 orderRequest.getUser().getId(), orderRequest.getProduct().getId());
 
         if (savedOrder.isPresent()) {
