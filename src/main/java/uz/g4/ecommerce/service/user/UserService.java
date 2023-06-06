@@ -64,7 +64,7 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     public BaseResponse<UserResponse> getById(UUID id) {
         Optional<UserEntity> byId = userRepository.findById(id);
         if (byId.isPresent()) {
-            UserResponse user = modelMapper.map(byId, UserResponse.class);
+            UserResponse user = modelMapper.map(byId.get(), UserResponse.class);
             return BaseResponse.<UserResponse>builder()
                     .message("Success")
                     .status(200)

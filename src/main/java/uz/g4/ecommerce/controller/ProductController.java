@@ -14,13 +14,18 @@ import uz.g4.ecommerce.domain.dto.response.ProductResponse;
 import uz.g4.ecommerce.service.product.ProductService;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/product")
 public class ProductController {
     private final ProductService productService;
+
+    @PostMapping("/addProduct")
+    public String add(@RequestBody ProductRequest productRequest) {
+        BaseResponse<ProductResponse> response = productService.create(productRequest);
+        return response.getMessage();
+    }
 
     @PostMapping("/add")
     public ModelAndView addProduct(

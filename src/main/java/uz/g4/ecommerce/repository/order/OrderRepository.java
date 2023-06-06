@@ -16,12 +16,15 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
     @Query("select o from orders o where o.user.chatId = :chatId and o.orderState = 'IN_CART'")
     List<OrderEntity> findByChatId(@Param("chatId") Long chatId);
 
-    Optional<OrderEntity> findOrderEntityByUser_IdAndProduct_Id (UUID userId, UUID productId);
+    @Modifying
+    @Transactional
+    @Query("update orders o set o.amount = :amount where o.user.id = :userId and o.product.id = :productId and o.orderState = 'IN_CART'")
+    void updateAmount(@Param("amount") Integer amount, @Param("userId") UUID userId, @Param("productId") UUID productId);
 
     @Modifying
     @Transactional
-    @Query("update orders o set o.amount = :amount where o.user.id = :userId and o.product.id = :productId")
-    void updateAmount(@Param("amount") Integer amount, UUID userId, UUID productId);
+    @Query("update orders o set o.amount = :amount where o.user.id = :userId and o.product.id = :productId and o.orderState = 'ORDERED'")
+    void updateOrderAmountByStateEqualsOrdered(@Param("amount") Integer amount, @Param("userId") UUID userId, @Param("productId") UUID productId);
 
     @Modifying
     @Transactional
@@ -40,4 +43,11 @@ public interface OrderRepository extends JpaRepository<OrderEntity, UUID> {
     @Transactional
     @Query("update orders o set o.orderState = 'ORDERED' where o.id = :id")
     void updateOrderState(@Param("id") UUID id);
+
+    @Query("select o from orders o where o.user.id = :userId and o.product.id = :productId and o.orderState = 'IN_CART'")
+    Optional<OrderEntity> findOrderEntityByUserIdAndProductId(@Param("userId") UUID userId, @Param("productId") UUID productId);
+
+    @Query("select o from orders o where o.user.id = :userId and o.product.id = :productId and o.orderState = 'ORDERED'")
+    Optional<OrderEntity> findOrderEntityByStateEqualsOrdered(@Param("userId") UUID userId, @Param("productId") UUID productId);
+
 }

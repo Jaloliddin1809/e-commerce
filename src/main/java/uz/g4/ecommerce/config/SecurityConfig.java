@@ -25,6 +25,7 @@ public class SecurityConfig {
             "/images/**",
             "/auth/**",
             "/js/**",
+            "/product/addProduct"
     };
 
 
