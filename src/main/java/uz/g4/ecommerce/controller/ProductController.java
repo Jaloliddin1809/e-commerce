@@ -22,7 +22,6 @@ import uz.g4.ecommerce.service.product.ProductService;
 import uz.g4.ecommerce.service.user.UserService;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,13 +30,6 @@ import java.util.UUID;
 public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
-
-    @GetMapping("/get-one")
-    @ResponseBody
-    public Optional<ProductEntity> showEditModal(@RequestParam("id") UUID productId) {
-        return productService.getOneProduct(productId);
-    }
-
      @PostMapping("/add")
      public String updateEmployee(@ModelAttribute ProductRequest productRequest) {
          productService.create(productRequest);
