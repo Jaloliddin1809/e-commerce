@@ -14,11 +14,13 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductResponse {
+    private UUID id;
     private String name;
     private Double price;
     private Integer amount;
     private CategoryEntity category;
-    private UUID id;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
+    private String lastModifiedBy;
+    private String createdBy;
 }

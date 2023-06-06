@@ -1,6 +1,7 @@
 package uz.g4.ecommerce.service.user;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
@@ -46,19 +47,19 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     public BaseResponse<UserResponse> update(UserRequest userRequest, UUID id) {
         UserEntity user = userRepository.getById(id);
         try {
-            if (Objects.nonNull(userRequest.getName())) {
+            if (StringUtils.isNotBlank(userRequest.getName())) {
                 user.setName(userRequest.getName());
             }
-            if (Objects.nonNull(user.getUsername())) {
+            if (StringUtils.isNotBlank(userRequest.getUsername())) {
                 user.setUsername(userRequest.getUsername());
             }
-            if (Objects.nonNull(user.getUsername())) {
+            if (StringUtils.isNotBlank(userRequest.getPassword())) {
                 user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             }
-            if (Objects.nonNull(user.getRoles())) {
+            if (Objects.nonNull(userRequest.getRoles())) {
                 user.setRoles(userRequest.getRoles());
             }
-            if (Objects.nonNull(user.getPermissions())) {
+            if (Objects.nonNull(userRequest.getPermissions())) {
                 user.setPermissions(userRequest.getPermissions());
             }
             userRepository.save(user);
@@ -83,6 +84,16 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
             return true;
         }
         return false;
+    }
+
+    public BaseResponse<List<UserResponse>> findByKeyword(String keyword, String username) {
+        List<UserEntity> userEntities = userRepository.findByKeyword(keyword);
+        return BaseResponse.<List<UserResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(modelMapper.map(userEntities,
+                        new TypeToken<List<UserResponse>>(){}.getType()))
+                .build();
     }
 
     @Override

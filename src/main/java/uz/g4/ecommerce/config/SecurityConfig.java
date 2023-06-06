@@ -25,7 +25,7 @@ public class SecurityConfig {
             "/images/**",
             "/auth/**",
             "/js/**",
-    }
+    };
 
 
 

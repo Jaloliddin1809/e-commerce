@@ -64,9 +64,21 @@
                     <div class="col-sm-8"><h2>Order <b>Details</b></h2></div>
                     <div class="col-sm-4">
                         <div style="display: flex" class="search-box">
-                            <i style="margin-left: 0px; margin-top: 0px; position: absolute" class="material-icons">&#xE8B6;</i>
-                            <input type="text" class="form-control" placeholder="Search&hellip;">
+                            <form id="searchForm" th:href="@{/dashboard/employees/search}" method="get">
+                                <i style="margin-left: 0px; margin-top: 0px; position: absolute;" class="material-icons">&#xE8B6;</i>
+                                <input type="text" id="textSearch" class="form-control" placeholder="Search&hellip;" name="keyword">
+                                <button type="submit" style="display: none;">GO</button>
+                            </form>
                         </div>
+
+                        <script>
+                            document.getElementById("textSearch").addEventListener("keydown", function(event) {
+                                if (event.keyCode === 13) {
+                                    event.preventDefault();
+                                    document.getElementById("searchForm").submit();
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>

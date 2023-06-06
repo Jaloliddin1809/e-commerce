@@ -11,10 +11,12 @@ import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.domain.dto.response.ProductResponse;
 import uz.g4.ecommerce.domain.entity.category.CategoryEntity;
+import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.repository.category.CategoryRepository;
 import uz.g4.ecommerce.service.BaseService;
 
+import java.awt.datatransfer.Clipboard;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -173,4 +175,24 @@ public class CategoryService implements BaseService<BaseResponse<CategoryRespons
                 .build();
     }
 
+    public BaseResponse<List<CategoryResponse>> findByKeyword(String keyword) {
+        List<CategoryEntity> category = repository.findByKeyword(keyword);
+        return BaseResponse.<List<CategoryResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(mapper.map(category,
+                        new TypeToken<List<CategoryResponse>>(){}.getType()))
+                .build();
+    }
+
+    public BaseResponse<List<CategoryResponse>> findByKeywordForChild(String keyword, UUID id) {
+        Optional<CategoryEntity> byId = repository.findById(id);
+        List<CategoryEntity> category = repository.searchKeywordForChild(keyword, byId.get());
+        return BaseResponse.<List<CategoryResponse>>builder()
+                .status(200)
+                .message("success")
+                .data(mapper.map(category,
+                        new TypeToken<List<CategoryResponse>>(){}.getType()))
+                .build();
+    }
 }

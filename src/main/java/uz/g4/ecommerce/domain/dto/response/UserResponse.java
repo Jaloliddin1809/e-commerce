@@ -24,4 +24,19 @@ public class UserResponse {
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     private String lastModifiedBy;
+    private String createdBy;
+
+    public UserResponse(UUID id, String name, String username, String password, Double balance, Set<Role> roles, Set<Permission> permissions, Boolean enabled, LocalDateTime createdDate, LocalDateTime updatedDate, String lastModifiedBy) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.balance = balance;
+        this.roles = roles;
+        this.permissions = permissions;
+        this.enabled = enabled;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.lastModifiedBy = lastModifiedBy;
+    }
 }

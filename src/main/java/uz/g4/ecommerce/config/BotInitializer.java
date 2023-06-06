@@ -8,9 +8,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import uz.g4.ecommerce.controller.bot.BotController;
 
-@Component
-@RequiredArgsConstructor
-public class BotInitializer {
+//@Component
+//@RequiredArgsConstructor
+//public class BotInitializer {
 //    @Bean
 //    public void init() {
 //        try {
@@ -21,7 +21,7 @@ public class BotInitializer {
 //            throw new RuntimeException(e);
 //        }
 //    }
-    private final BotController controller;
+//    private final BotController controller;
 
 //    @Bean
 //    public void run() {
@@ -32,4 +32,4 @@ public class BotInitializer {
 //            throw new RuntimeException(e);
 //        }
 //    }
-}
+//}
