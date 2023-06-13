@@ -8,28 +8,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 import uz.g4.ecommerce.controller.bot.BotController;
 
-//@Component
-//@RequiredArgsConstructor
-//public class BotInitializer {
-//    @Bean
-//    public void init() {
-//        try {
-//            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-//            botsApi.registerBot((LongPollingBot) telegramBot);
-//            System.out.println("started");
-//        } catch (TelegramApiException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//    private final BotController controller;
+@Component
+@RequiredArgsConstructor
+public class BotInitializer {
+    private final BotController controller;
 
-//    @Bean
-//    public void run() {
-//        try {
-//            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-//            botsApi.registerBot(controller);
-//        } catch (TelegramApiException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//}
+    @Bean
+    public void run() {
+        try {
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+            botsApi.registerBot(controller);
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

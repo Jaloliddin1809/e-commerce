@@ -156,11 +156,11 @@ public class BotController extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return "https://t.me/e_commerceBot";
+        return "t.me/khamroz_bot";
     }
 
     @Override
     public String getBotToken() {
-        return "6074706446:AAF27Kiyok_KrYjmvBaEg4COx17HCKpoCKs";
+        return "6102106138:AAGzeiG916qRkjrBvcW-baSbgIOQh6IpYsc";
     }
 }

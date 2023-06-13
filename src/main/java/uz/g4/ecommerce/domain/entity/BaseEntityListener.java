@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class BaseEntityListener {
     @PrePersist
@@ -19,7 +20,9 @@ public class BaseEntityListener {
         entity.setLastModifiedBy(getAuthorizedName());
     }
     public String getAuthorizedName() {
-        Authentication user = SecurityContextHolder.getContext().getAuthentication();
-        return user.getName();
+        if(Objects.isNull(SecurityContextHolder.getContext().getAuthentication())){
+            return "TelegramBot";
+        }
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }

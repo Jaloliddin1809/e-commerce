@@ -25,6 +25,13 @@ public class UserService implements BaseService<BaseResponse<UserResponse>, User
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
 
+    public Set<Permission> getAllPermissionsByUsername(String username) {
+        Optional<UserEntity> user = userRepository.findByUsername(username);
+        if (user.isPresent()) {
+            return user.get().getPermissions();
+        }
+        return Collections.emptySet();
+    }
     @Override
     public BaseResponse<UserResponse> create(UserRequest userRequest) {
         if (userRepository.existsByUsername(userRequest.getUsername())) {

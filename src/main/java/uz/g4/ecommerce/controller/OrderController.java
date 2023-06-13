@@ -18,6 +18,7 @@ import uz.g4.ecommerce.domain.entity.order.OrderEntity;
 import uz.g4.ecommerce.domain.entity.product.ProductEntity;
 import uz.g4.ecommerce.domain.entity.user.UserEntity;
 import uz.g4.ecommerce.service.order.OrderService;
+import uz.g4.ecommerce.service.user.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +29,7 @@ import java.util.UUID;
 @RequestMapping("/dashboard/orders")
 public class OrderController {
     private final OrderService orderService;
+    private final UserService userService;
     @PostMapping("/add")
     public String updateEmployee(@ModelAttribute OrderRequest userRequest, Model model) {
         BaseResponse<OrderResponse> response = orderService.create(userRequest);
@@ -36,6 +38,7 @@ public class OrderController {
     }
     @GetMapping
     public String getList(Model model) {
+        model.addAttribute("userPermission", userService.getAllPermissionsByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         model.addAttribute("response", orderService.findAll());
         return "order";
     }
@@ -46,27 +49,9 @@ public class OrderController {
         return "redirect:/dashboard/orders";
     }
     @PostMapping("/update")
-    public String updateUser(@RequestParam("id") UUID id, @ModelAttribute OrderRequest orderRequest) {
-        orderService.update(orderRequest, id);
+    public String updateUser(@RequestParam("id") UUID id, @RequestParam("ProductState") String state) {
+        orderService.updateStatus(state, id);
         return "redirect:/dashboard/orders";
 
-
-        //    @PostMapping("/add")
-//    public String updateEmployee(@ModelAttribute ProductRequest productRequest) {
-//        orderService.create(productRequest);
-//
-//        return "redirect:/dashboard/products";
-//    }
-
-//    @PostMapping("/delete")
-//    public String deleteWorker(@RequestParam("id") UUID id) {
-//        productService.delete(id);
-//        return "redirect:/dashboard/products";
-//    }
-//    @PostMapping("/update")
-//    public String updateUser(@RequestParam("id") UUID id, @ModelAttribute ProductRequest productRequest) {
-//        productService.update(productRequest, id);
-//        return "redirect:/dashboard/products";
-//    }
     }
 }

@@ -358,8 +358,10 @@ public class ProductService implements BaseService<BaseResponse<ProductResponse>
                 .status(200)
                 .message("success")
                 .data(modelMapper.map(product,
-                        new TypeToken<List<ProductResponse>>(){}.getType()))
+                        new TypeToken<List<ProductResponse>>() {
+                        }.getType()))
                 .build();
+    }
     private void updateHistory(List<HistoryResponse> userHistories, String name, UUID id, int amount, double totalPrice) {
         for (HistoryResponse userHistory : userHistories) {
             if (userHistory.getUser().getId().equals(id) && userHistory.getProductName().equals(name)) {
