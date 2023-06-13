@@ -2,6 +2,8 @@ package uz.g4.ecommerce.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +25,8 @@ import uz.g4.ecommerce.service.user.UserService;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
+
 @Controller
 @RequiredArgsConstructor
 
@@ -30,6 +34,8 @@ import java.util.Optional;
 public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
+    private final UserService userService;
+
 
     @GetMapping("/get-one")
     @ResponseBody
@@ -43,7 +49,7 @@ public class ProductController {
      }
     @GetMapping
     public String getList(Model model, String keyword) {
-
+        model.addAttribute("userPermission", userService.getAllPermissionsByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         if (Objects.nonNull(keyword)) {
             model.addAttribute("response", productService.findByKeyword(keyword));
         } else {
@@ -65,6 +71,7 @@ public class ProductController {
 
     @GetMapping("/get-categories")
     public String getAllCategories(Model model) {
+        model.addAttribute("userPermission", userService.getAllPermissionsByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         BaseResponse<List<CategoryResponse>> categories = categoryService.findAllChildCategories();
         model.addAttribute("categories", categories.getData());
     return "product";

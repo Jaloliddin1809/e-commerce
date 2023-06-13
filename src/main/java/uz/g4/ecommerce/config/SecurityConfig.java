@@ -26,9 +26,6 @@ public class SecurityConfig {
             "/auth/**",
             "/js/**",
     };
-}
-
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

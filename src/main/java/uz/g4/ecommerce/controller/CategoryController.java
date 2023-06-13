@@ -1,6 +1,7 @@
 package uz.g4.ecommerce.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import uz.g4.ecommerce.domain.dto.response.BaseResponse;
 import uz.g4.ecommerce.domain.dto.response.CategoryResponse;
 import uz.g4.ecommerce.domain.dto.response.UserResponse;
 import uz.g4.ecommerce.service.category.CategoryService;
+import uz.g4.ecommerce.service.user.UserService;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,9 +22,11 @@ import java.util.UUID;
 @RequestMapping("/dashboard/categories")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final UserService userService;
 
     @GetMapping
     public String getList(Model model, String keyword) {
+        model.addAttribute("userPermission", userService.getAllPermissionsByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         if (Objects.nonNull(keyword)) {
             model.addAttribute("categories", categoryService.findByKeyword(keyword).getData());
         } else {
@@ -50,6 +54,7 @@ public class CategoryController {
 
     @GetMapping("/children/{categoryId}")
     public String categoryChild(@PathVariable("categoryId") UUID categoryId, Model model, String keyword) {
+        model.addAttribute("userPermission", userService.getAllPermissionsByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         if (Objects.nonNull(keyword)) {
             model.addAttribute("categories", categoryService.findByKeywordForChild(keyword, categoryId).getData());
             model.addAttribute("parentId",categoryId);

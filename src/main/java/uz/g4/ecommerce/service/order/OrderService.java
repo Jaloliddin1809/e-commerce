@@ -76,6 +76,39 @@ public class OrderService implements BaseService<BaseResponse<OrderResponse>, Or
                 .build();
     }
 
+    public BaseResponse<OrderResponse> updateStatus(String productState, UUID id) {
+        Optional<OrderEntity> order = orderRepository.findById(id);
+        if (order.isPresent()){
+            switch (productState) {
+                case "ORDERED":
+                    order.get().setOrderState(OrderStatus.ORDERED);
+                    break;
+                case "SHIPPING":
+                    order.get().setOrderState(OrderStatus.SHIPPING);
+                    break;
+                case "DELIVERED":
+                    order.get().setOrderState(OrderStatus.DELIVERED);
+                    orderRepository.deleteById(id);
+                    return BaseResponse.<OrderResponse>builder()
+                        .message("Order deleted")
+                        .status(205)
+                        .build();
+                default:
+                    break;
+            }
+            OrderEntity save = orderRepository.save(order.get());
+            return BaseResponse.<OrderResponse>builder()
+                    .message("Success")
+                    .status(200)
+                    .data(mapper.map(save,OrderResponse.class))
+                    .build();
+        }
+        return BaseResponse.<OrderResponse>builder()
+                .status(500)
+                .message("Order not found")
+                .build();
+    }
+
     @Override
     public Boolean delete(UUID id) {
         Optional<OrderEntity> byId = orderRepository.findById(id);
