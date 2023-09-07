@@ -92,7 +92,7 @@
                 </div>
 
 
-                <button type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#addCategory">
+                <button th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).ADD)}"  type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#addCategory">
                     <i class="fa fa-plus"></i> Add New
                 </button>
 
@@ -132,9 +132,9 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Type <i class="fa fa-sort"></i></th>
-                        <th>Created Date</th>
+                        <th>Type</th>
                         <th>Created By</th>
+                        <th>Created Date</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -151,19 +151,19 @@
                         <td th:text="${category.createdBy}"></td>
                         <td th:text="${#temporals.format(category.createdDate, 'dd MMM yyyy HH:mm:ss')}"></td>
                         <td>
-                            <a href="#" class="view" title="View" data-toggle="modal"
+                            <a th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).GET)}"  href="#" class="view" title="View" data-toggle="modal"
                                th:data-target="'#viewModal' + ${categoryNumber.count}"
                                th:data-name="${category.type}" th:data-age="${category.id}">
                                 <i class="material-icons">&#xE417;</i>
                             </a>
 
-                            <a class="edit" title="Edit"
+                            <a th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).EDIT)}"  class="edit" title="Edit"
                                data-toggle="modal" data-target="#editModal">
                                 <i class="material-icons">&#xE254;</i>
                             </a>
                             <input th:value="${category.id}" type="hidden" id="id">
 
-                            <a href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteModal">
+                            <a th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).DELETE)}"  href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteModal">
                                 <i class="material-icons">&#xE872;</i>
                             </a>
 

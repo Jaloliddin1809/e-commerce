@@ -84,7 +84,7 @@
                 </div>
 
 
-                <button type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#addProduct">
+                <button th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).ADD)}"  type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#addProduct">
                     <i class="fa fa-plus"></i> Add New
                 </button>
 
@@ -155,17 +155,17 @@
                         <td th:text="${product.amount}"></td>
                         <td th:text="${#temporals.format(product.createdDate, 'dd MMM yyyy HH:mm:ss')}"></td>
                         <td>
-                            <a href="#" class="view" title="View" data-toggle="modal"
+                            <a th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).GET)}"  href="#" class="view" title="View" data-toggle="modal"
                                th:data-target="'#viewModal' + ${proNumber.count}"
                                th:data-name="${product.name}" th:data-age="${product.price}">
                                 <i class="material-icons">&#xE417;</i>
                             </a>
 
-                            <a th:href="@{/dashboard/products/get-one/(id=${product.id})}"  class="edit" title="Edit" data-toggle="modal" data-target="#editProduct">
+                            <a th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).EDIT)}"  th:href="@{/dashboard/products/get-one/(id=${product.id})}"  class="edit" title="Edit" data-toggle="modal" data-target="#editProduct">
                                 <i class="material-icons">&#xE254;</i>
                             </a>
 
-                            <a href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteProduct">
+                            <a th:if="${userPermission.contains(T(uz.g4.ecommerce.domain.entity.user.Permission).DELETE)}"  href="#" class="delete" title="Delete" data-toggle="modal" data-target="#deleteProduct">
                                 <i class="material-icons">&#xE872;</i>
                             </a>
 
